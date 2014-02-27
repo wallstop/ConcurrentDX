@@ -1,0 +1,95 @@
+\hypertarget{class_d_x_1_1_spin_mutex}{\section{D\-X\-:\-:Spin\-Mutex Class Reference}
+\label{class_d_x_1_1_spin_mutex}\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}}
+}
+
+
+\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast.  
+
+
+
+
+{\ttfamily \#include $<$Spin\-Locks.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_d_x_1_1_spin_mutex_ad550ac8a2a96dbc0e53bb52c58c4a2e9}{lock} ()
+\begin{DoxyCompactList}\small\item\em Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_a5c4d4863862540c18c007501d87168d6}{unlock()}. \end{DoxyCompactList}\item 
+bool \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock} ()
+\begin{DoxyCompactList}\small\item\em Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is called, execution will continue. \end{DoxyCompactList}\item 
+\hypertarget{class_d_x_1_1_spin_mutex_a5c4d4863862540c18c007501d87168d6}{void \hyperlink{class_d_x_1_1_spin_mutex_a5c4d4863862540c18c007501d87168d6}{unlock} ()}\label{class_d_x_1_1_spin_mutex_a5c4d4863862540c18c007501d87168d6}
+
+\begin{DoxyCompactList}\small\item\em Unlocks the mutex. This call is non-\/blocking, because having it otherwise doesn't make any sense. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. 
+
+\begin{DoxyNote}{Note}
+\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is not a recursive mutex
+\end{DoxyNote}
+Sample of a \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} protecting an int\-: 
+\begin{DoxyCode}
+\textcolor{keyword}{mutable} SpinMutex myMutex;
+\textcolor{keywordtype}{int} myProtectedValue; 
+
+
+\textcolor{keywordtype}{void} setMyValue(\textcolor{keywordtype}{int} newValue)
+\{
+    myMutex.lock();
+    myProtectedValue = newValue;
+    myMutex.unlock();
+\}
+
+\textcolor{keywordtype}{int} getMyValue()\textcolor{keyword}{ const}
+\textcolor{keyword}{}\{
+    \textcolor{keywordtype}{int} ret;
+    myMutex.lock();
+    ret = myProtectedValue;
+    myMutex.unlock();
+
+    \textcolor{keywordflow}{return} ret;
+\}
+\end{DoxyCode}
+
+
+Please note that the above example could also be accomplished by making the type of my\-Protected\-Value std\-::atomic$<$int$>$, but the usage still stands. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_d_x_1_1_spin_mutex_ad550ac8a2a96dbc0e53bb52c58c4a2e9}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!lock@{lock}}
+\index{lock@{lock}!DX::SpinMutex@{D\-X\-::\-Spin\-Mutex}}
+\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}void D\-X\-::\-Spin\-Mutex\-::lock (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_d_x_1_1_spin_mutex_ad550ac8a2a96dbc0e53bb52c58c4a2e9}
+
+
+Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_a5c4d4863862540c18c007501d87168d6}{unlock()}. 
+
+\begin{DoxyNote}{Note}
+\hyperlink{class_d_x_1_1_spin_mutex_ad550ac8a2a96dbc0e53bb52c58c4a2e9}{lock()} is not recursive. 
+
+\hyperlink{class_d_x_1_1_spin_mutex_ad550ac8a2a96dbc0e53bb52c58c4a2e9}{lock()} is blocking. 
+\end{DoxyNote}
+\hypertarget{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!try\-Lock@{try\-Lock}}
+\index{try\-Lock@{try\-Lock}!DX::SpinMutex@{D\-X\-::\-Spin\-Mutex}}
+\subsubsection[{try\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}bool D\-X\-::\-Spin\-Mutex\-::try\-Lock (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}
+
+
+Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is called, execution will continue. 
+
+\begin{DoxyNote}{Note}
+\hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is not recursive. 
+
+\hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\-Lock()} is non-\/blocking. 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Mutex/Spin\-Locks.\-h\end{DoxyCompactItemize}
