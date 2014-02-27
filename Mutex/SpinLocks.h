@@ -208,6 +208,10 @@ namespace DX
 
     void SpinRWMutex::lock(bool isWriter)
     {
+        while(m_writerLock)
+        {
+            // Spin out waiting for all writers to finish
+        }
         if(isWriter)
         {
             while(m_writerLock.exchange(true))
@@ -218,15 +222,10 @@ namespace DX
             {
                 // Spin out waiting for all readers to finish
             }
-
         }
         else // We're a reader
         {
             ++m_readerLock;
-            while(m_writerLock)
-            {
-                // Spin out waiting for all writers to finish
-            }
         }
     }
 
