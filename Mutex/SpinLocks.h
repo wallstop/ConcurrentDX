@@ -78,7 +78,11 @@ namespace DX
         void unlock(); 
 
     private:
+        // Initial padding so we aren't overlapping some other potentially contended cache
+        char pad[CACHE_LINE_SIZE];
         std::atomic<bool> m_lock;
+        // And then flesh out the rest of our pad
+        char pad_0[CACHE_LINE_SIZE - sizeof(std::atomic<bool>)];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,14 +100,14 @@ namespace DX
     void SpinMutex::lock()
     {
         while(m_lock.exchange(true)) 
-        { 
+        {
             // Spin out
         }
     }
 
     bool SpinMutex::tryLock()
     {
-        return  m_lock.exchange(true);
+        return m_lock.exchange(true);
     }
 
     void SpinMutex::unlock()
@@ -124,8 +128,8 @@ namespace DX
         in regards to remembering if you're a reader/writer.
 
         \note SpinRWMutex does *NOT* check to ensure that calls to lock/unlock are called with the same
-        boolean. It does handle these cases (crash-wise), but calling lock(true) and unlock(false) 
-        does not unlock the writer lock.
+        boolean. It does handle these cases (crash-wise), but calling lock(true) and unlock(false) from
+        the same thread does not unlock the writer lock.
 
         Sample of a SpinRWMutex protecting a custom class MyClass:
         \code
@@ -178,12 +182,16 @@ namespace DX
         void unlock(bool isWriter);
     
     private:
+        // Initial padding so we aren't overlapping some other potentially contended cache
+        char pad[CACHE_LINE_SIZE];
         // Keeps track of the number of readers
         std::atomic<size_t> m_readerLock;
         // Atomics are padded so there's no false-sharing
-        char pad[CACHE_LINE_SIZE - sizeof(std::atomic<size_t>)];
+        char pad_0[CACHE_LINE_SIZE - sizeof(std::atomic<size_t>)];
         // Keeps track of whether a writer currently has a handle on the SpinRWMutex
         std::atomic<bool>   m_writerLock;
+        // Pad for anything allocated after our class
+        char pad_1[CACHE_LINE_SIZE - sizeof(std::atomic<bool>)];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,6 +228,20 @@ namespace DX
                 // Spin out waiting for all writers to finish
             }
         }
+    }
+
+    bool SpinRWMutex::tryLock(bool isWriter)
+    {
+        if(isWriter)
+        {
+            return m_writerLock.exchange(true) && (m_readerLock > 0);
+        }
+        else
+        {
+            ++m_readerLock;
+            return m_writerLock;
+        }
+
     }
 
     void SpinRWMutex::unlock(bool isWriter)
@@ -285,7 +307,8 @@ namespace DX
 
     SpinLock::SpinLock(SpinMutex& _mutex) : m_lock(&_mutex)
     {
-        m_lock->lock();
+        if(m_lock)
+            m_lock->lock();
     }
 
     SpinLock::~SpinLock()
@@ -344,6 +367,8 @@ namespace DX
     SpinRWLock::SpinRWLock(SpinRWMutex& _mutex, bool _writer) 
         : m_lock(&_mutex), isWriter(_writer)
     {
+        if(m_lock)
+            m_lock->lock(isWriter);
     }
 
     SpinRWLock::~SpinRWLock()
