@@ -49,91 +49,89 @@ namespace DX
         std::atomic<size_t> m_size;
     };
 
-template <typename T>
-ConcurrentQueue<T>::ConcurrentQueue() : m_start(nullptr), m_end(nullptr), m_size(0)
-{
-    m_start = new Node<T>();
-    m_end = new Node<T>();
-}
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
 
-template <typename T>
-ConcurrentQueue<T>::ConcurrentQueue(const ConcurrentQueue& copy) 
-    : m_start(nullptr), m_end(nullptr), m_size(0)
-{
-    if(!copy.m_start)
-        return; // That's unusual - bail
-
-    m_start = new Node;
-    Node<T>* currentNode = m_start;
-    Node<T>* nodeToCopy = copy.m_start->next;
-    while(!nodeToCopy && !currentNode)
+    template <typename T>
+    ConcurrentQueue<T>::ConcurrentQueue() : m_start(nullptr), m_end(nullptr), m_size(0)
     {
-        Node* newNode = new Node(nodeToCopy->data);
-        currentNode->next = newNode;
-        currentNode = newNode;
-        ++m_size; // We could copy it over in the initialization list - but it could be bad data
+        m_start = new Node<T>();
+        m_end = new Node<T>();
     }
 
-    m_end = currentNode;
-}
-
-template <typename T>
-ConcurrentQueue<T>::ConcurrentQueue(ConcurrentQueue&& move) 
-    : m_start(move.m_start), m_end(move.m_end), m_size(move.m_size)
-{
-    SpinLock startLock(pushMuted);
-    SpinLock endLock(popMutex);
-    move.m_start = nullptr;
-}
-
-//
-// THIS DESTRUCTOR IS NOT THREAD SAFE. Please be careful, folks.
-//
-template <typename T>
-ConcurrentQueue<T>::~ConcurrentQueue()
-{
-    while(m_start)
+    template <typename T>
+    ConcurrentQueue<T>::ConcurrentQueue(const ConcurrentQueue& copy) 
+        : m_start(nullptr), m_end(nullptr), m_size(0)
     {
-        Node<T>* currentNode = m_start;
-        m_start = currentNode->next;
-        delete currentNode->data;
-        delete currentNode;
-    }
-}
-
-template <typename T>
-bool ConcurrentQueue<T>::isEmpty() const
-{
-    return !m_start.load()->next;
-}
-
-template <typename T>
-size_t ConcurrentQueue<T>::size() const
-{
-    return m_size.load();
-}
-
-template <typename T>
-T ConcurrentQueue<T>::pop()
-{
-    T ret;
-    if(!isEmpty())
-    {
-
-
-    }
-}
-
-template <typename T>
-void ConcurrentQueue<T>::push(const T& object)
-{
-    Node<T>* temp = new Node(new T(object));
-    {
-        pushLock.lock();
-
-
+        // TODO: Thread-safe copy constructor
     }
 
+    template <typename T>
+    ConcurrentQueue<T>::ConcurrentQueue(ConcurrentQueue&& move) 
+        : m_start(nullptr), m_end(nullptr), m_size(0)
+    {
+        // TODO: Thread-safe move constructor
+    }
+
+    template <typename T>
+    ConcurrentQueue<T>::~ConcurrentQueue()
+    {
+        // You never know how you get in these destructors, so *just* in case...
+        SpinLock pushLock(pushMutex);
+        SpinLock popLock(popMutex);
+        while(m_start)
+        {
+            Node<T>* currentNode = m_start;
+            m_start = currentNode->next;
+            delete currentNode->data;
+            delete currentNode;
+        }
+    }
+
+    template <typename T>
+    bool ConcurrentQueue<T>::isEmpty() const
+    {
+        return !m_start->next;
+    }
+
+    template <typename T>
+    size_t ConcurrentQueue<T>::size() const
+    {
+        return m_size;
+    }
+
+    template <typename T>
+    T ConcurrentQueue<T>::pop()
+    {
+        T ret;
+        Node<T>* temp;
+        SpinLock _lock(popMutex);
+        temp = m_start->next;
+        if(!temp) // No items left!
+            return ret;
+
+        if(temp)
+            ret = std::move(m_start->*data);
+        
+        // Single pass deletion
+        // TODO: Consolidate this? We can pass this off to another thread, too
+        m_start = temp->next;
+        delete temp->data;
+        delete temp;
+        --m_size;
+
+        return ret;
+    }
+
+    template <typename T>
+    void ConcurrentQueue<T>::push(const T& object)
+    {
+        Node<T>* temp = new Node(new T(object));
+        SpinLock _lock(pushMutex);
+        m_end->next = temp;
+        m_end = temp;
+        ++m_size;
+    }
 
 }
-
