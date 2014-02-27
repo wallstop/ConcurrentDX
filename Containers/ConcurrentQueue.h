@@ -24,7 +24,6 @@ namespace DX
         size_t  size() const;
         T       pop();
         void    push(const T&);
-        void    push(T&&);
 
     private: 
 
@@ -105,6 +104,9 @@ namespace DX
     T ConcurrentQueue<T>::pop()
     {
         T ret;
+        if(!m_start)
+            return ret;
+
         Node<T>* temp;
         SpinLock _lock(popMutex);
         temp = m_start->next;
@@ -127,6 +129,9 @@ namespace DX
     template <typename T>
     void ConcurrentQueue<T>::push(const T& object)
     {
+        if(!m_end)
+            return;
+
         Node<T>* temp = new Node(new T(object));
         SpinLock _lock(pushMutex);
         m_end->next = temp;
