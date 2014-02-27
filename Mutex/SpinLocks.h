@@ -9,15 +9,15 @@
 
 #include <atomic>
 
- /*
-    L1, L2, and L3 cache lines on i7s are 64 Bytes. CACHE_LINE_SIZE is used to pad classes that use
-    multiple internal atomics / other variables to reduce the likelihood of cache contention and 
-    false sharing
-*/
-#define CACHE_LINE_SIZE 64
-
 namespace DX
 {
+
+    /*
+        L1, L2, and L3 cache lines on i7s are 64 Bytes. CACHE_LINE_SIZE is used to pad classes that use
+        multiple internal atomics / other variables to reduce the likelihood of cache contention and 
+        false sharing
+    */
+    #define CACHE_LINE_SIZE 64
 
     /*! \brief SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in
         active-CPU-land as opposed to the traditional method of yielding context. It's target 
@@ -31,7 +31,6 @@ namespace DX
             mutable SpinMutex myMutex;
             int myProtectedValue; 
 
-            
             void setMyValue(int newValue)
             {
                 myMutex.lock();
