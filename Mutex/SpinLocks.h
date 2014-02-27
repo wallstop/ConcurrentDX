@@ -175,7 +175,7 @@ namespace DX
             \note tryLock() is not recursive
             \note tryLock() is non-blocking
         */
-        bool tryLock(bool isWriter);
+        //bool tryLock(bool isWriter);
 
         /*! \brief Unlocks the mutex as a writer or a reader
         */
@@ -223,25 +223,25 @@ namespace DX
                 // Spin out waiting for all readers to finish
             }
         }
-        else // We're a reader
-        {
-            ++m_readerLock;
-        }
-    }
-
-    bool SpinRWMutex::tryLock(bool isWriter)
-    {
-        if(isWriter)
-        {
-            return m_writerLock.exchange(true) && (m_readerLock > 0);
-        }
         else
         {
             ++m_readerLock;
-            return m_writerLock;
         }
-
     }
+
+    // Trying the lock might screw things up
+    //bool SpinRWMutex::tryLock(bool isWriter)
+    //{
+    //    if(isWriter)
+    //    {
+    //        return m_writerLock.exchange(true) && (m_readerLock > 0);
+    //    }
+    //    else
+    //    {
+    //        ++m_readerLock;
+    //        return m_writerLock;
+    //    }
+    //}
 
     void SpinRWMutex::unlock(bool isWriter)
     {
