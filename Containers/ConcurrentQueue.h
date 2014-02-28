@@ -1,7 +1,14 @@
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// First-Pass at high performance multi-reader, multi-writer queue
+// Author: Eli Pinkerton
+// Date: 2/26/14
+////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include "../CacheLine.h"
 #include "../Mutex/SpinLocks.h"
+#include "../Mutex/Locks.h"
 
 namespace DX
 {
@@ -127,17 +134,17 @@ namespace DX
     template <typename T>
     bool ConcurrentQueue<T>::pop(T& in)
     {
-
-        // Unfurtunately, due to temporaries, this whole section needs to be locked down...
-        SpinLock _lock(popMutex);
-        
         if(!m_start)
             return false;
 
-        Node* oldStart = m_start;
+        // pop() can't be using a spin mutex...
+        SpinLock _lock(popMutex);
+
         Node* newStart = m_start->next;
         if(!newStart) // No items left!
             return false;
+
+        Node* oldStart = m_start;
 
         m_start = newStart;
 
@@ -146,12 +153,8 @@ namespace DX
             in = std::move(*(m_start->data));
 
         if(oldStart->data)
-        {
             delete oldStart->data;
-            oldStart->data = nullptr;
-        }
         delete oldStart;
-        oldStart = nullptr;
 
         --m_size;
 

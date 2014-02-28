@@ -74,8 +74,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CacheLine.h" />
     <ClInclude Include="..\ConcurrentDX.h" />
     <ClInclude Include="..\Containers\ConcurrentQueue.h" />
+    <ClInclude Include="..\Mutex\Locks.h" />
     <ClInclude Include="..\Mutex\SpinLocks.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

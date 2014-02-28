@@ -1,11 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// ConcurrencyDX all-in-one include
+// Useful #DEFINES for ConcurrencyDX
 // Author: Eli Pinkerton
 // Date: 2/26/14
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "CacheLine.h"
-#include "Mutex/SpinLocks.h"
-#include "Containers/ConcurrentQueue.h"
+/*
+    L1, L2, and L3 cache lines on i7s are 64 Bytes. CACHE_LINE_SIZE is used to pad classes that use
+    multiple internal atomics / other variables to reduce the likelihood of cache contention and 
+    false sharing
+*/
+#define CACHE_LINE_SIZE 64

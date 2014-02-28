@@ -23,5 +23,9 @@
     <ClInclude Include="..\Containers\ConcurrentQueue.h">
       <Filter>Containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Mutex\Locks.h">
+      <Filter>Mutex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CacheLine.h" />
   </ItemGroup>
 </Project>

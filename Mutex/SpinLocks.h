@@ -7,17 +7,12 @@
 
 #pragma once
 
+#include "../CacheLine.h"
+
 #include <atomic>
 
 namespace DX
 {
-
-    /*
-        L1, L2, and L3 cache lines on i7s are 64 Bytes. CACHE_LINE_SIZE is used to pad classes that use
-        multiple internal atomics / other variables to reduce the likelihood of cache contention and 
-        false sharing
-    */
-    #define CACHE_LINE_SIZE 64
 
     /*! \brief SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in
         active-CPU-land as opposed to the traditional method of yielding context. It's target 
@@ -82,7 +77,7 @@ namespace DX
         char pad[CACHE_LINE_SIZE];
         std::atomic<bool> m_lock;
         // And then flesh out the rest of our pad
-        char pad_0[CACHE_LINE_SIZE - sizeof(std::atomic<bool>)];
+        char pad_0[CACHE_LINE_SIZE - (CACHE_LINE_SIZE  %sizeof(std::atomic<bool>))];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,23 +156,22 @@ namespace DX
         SpinLock(SpinMutex& mutex);
         ~SpinLock();
     private:
-        SpinMutex* m_lock;
+
+        SpinMutex* m_mutex;
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // impl
 
-    SpinLock::SpinLock(SpinMutex& _mutex) : m_lock(&_mutex)
+    SpinLock::SpinLock(SpinMutex& _mutex) : m_mutex(&_mutex)
     {
-        if(m_lock)
-            m_lock->lock();
+        m_mutex->lock();
     }
 
     SpinLock::~SpinLock()
     {
-        if(m_lock)
-            m_lock->unlock();
+        m_mutex->unlock();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
