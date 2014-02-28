@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -70,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -93,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is the preferred way of interacting with a <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is a lock-guard style class, locking the <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> upon construction and releasing the lock upon destruction. <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> remembers whether it is a reader or writer lock, and releases the same kind of lock that it was constructed with.  
+<p><a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is the preferred way of interacting with a <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is a lock-guard style class, locking the <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> upon construction and releasing the lock upon destruction. <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> remembers whether it is a reader or writer lock, and releases the same kind of lock that it was constructed with.  
  <a href="class_d_x_1_1_spin_r_w_lock.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_spin_locks_8h_source.html">SpinLocks.h</a>&gt;</code></p>
@@ -104,9 +105,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a69454faf90759dcb64cca55d827f838d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is the preferred way of interacting with a <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is a lock-guard style class, locking the <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> upon construction and releasing the lock upon destruction. <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> remembers whether it is a reader or writer lock, and releases the same kind of lock that it was constructed with. </p>
-<p>The big advantage of using SpinRWLocks over <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> is the automatic unlock on destruction: unlike the examples provided above, no copies have to be made on a get() call</p>
-<dl class="section note"><dt>Note</dt><dd>SpinRWLocks do not allow for recursive writer-locks of a single <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a></dd></dl>
+<div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is the preferred way of interacting with a <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is a lock-guard style class, locking the <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> upon construction and releasing the lock upon destruction. <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> remembers whether it is a reader or writer lock, and releases the same kind of lock that it was constructed with. </p>
+<p>The big advantage of using SpinRWLocks over <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> is the automatic unlock on destruction: unlike the examples provided above, no copies have to be made on a get() call</p>
+<dl class="section note"><dt>Note</dt><dd>SpinRWLocks do not allow for recursive writer-locks of a single <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a></dd></dl>
 <div class="fragment"><div class="line">MyClass myClass;</div>
 <div class="line"><span class="keyword">mutable</span> SpinRWMutex myRWMutex;</div>
 <div class="line"></div>
@@ -147,7 +148,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">mutex</td><td>The <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> that the lock should be locking/unlocking </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mutex</td><td>The <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> that the lock should be locking/unlocking </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">isWriter</td><td>True indicates a writer lock, False indicates a reader lock </td></tr>
   </table>
   </dd>
@@ -161,7 +162,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Feb 26 2014 21:44:32 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

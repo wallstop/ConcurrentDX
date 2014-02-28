@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ConcurrentDX: Member List</title>
+<title>ConcurrentDX: DX::ConcurrentQueue&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,22 +82,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>DX</b></li><li class="navelem"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a></li>  </ul>
+<li class="navelem"><b>DX</b></li><li class="navelem"><a class="el" href="class_d_x_1_1_concurrent_queue.html">ConcurrentQueue</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="class_d_x_1_1_concurrent_queue-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">DX::SpinRWMutex Member List</div>  </div>
+<div class="title">DX::ConcurrentQueue&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>, including all inherited members.</p>
-<table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56">lock</a>(bool isWriter)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>SpinRWMutex</b>() (defined in <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac82ed966423779e8e021cf8a227ca4d9">unlock</a>(bool isWriter)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>~SpinRWMutex</b>() (defined in <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-</table></div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a53b572618eefcd822c5f480df1ff0a68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53b572618eefcd822c5f480df1ff0a68"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ConcurrentQueue</b> (const <a class="el" href="class_d_x_1_1_concurrent_queue.html">ConcurrentQueue</a> &amp;copy)</td></tr>
+<tr class="separator:a53b572618eefcd822c5f480df1ff0a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97410a1d0d3a36f5ee9715ba39929f01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97410a1d0d3a36f5ee9715ba39929f01"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ConcurrentQueue</b> (<a class="el" href="class_d_x_1_1_concurrent_queue.html">ConcurrentQueue</a> &amp;&amp;move)</td></tr>
+<tr class="separator:a97410a1d0d3a36f5ee9715ba39929f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a471ad014f5c7bbcc7564792be3738e74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a471ad014f5c7bbcc7564792be3738e74"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEmpty</b> () const </td></tr>
+<tr class="separator:a471ad014f5c7bbcc7564792be3738e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bceba6b265016871335a98ce3985cfb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bceba6b265016871335a98ce3985cfb"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const </td></tr>
+<tr class="separator:a8bceba6b265016871335a98ce3985cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3506ef7d7ea9b5619818aa8fce507087"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3506ef7d7ea9b5619818aa8fce507087"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>pop</b> ()</td></tr>
+<tr class="separator:a3506ef7d7ea9b5619818aa8fce507087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd4c07e131e1d562c74fa0d23289ea5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacd4c07e131e1d562c74fa0d23289ea5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>push</b> (const T &amp;)</td></tr>
+<tr class="separator:aacd4c07e131e1d562c74fa0d23289ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>Containers/<a class="el" href="_concurrent_queue_8h_source.html">ConcurrentQueue.h</a></li>
+</ul>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">

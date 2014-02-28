@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -70,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -93,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land ...">SpinMutex</a> is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land as opposed to the traditional method of yielding context. It's target use-case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast.  
+<p><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-lan...">SpinMutex</a> is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land as opposed to the traditional method of yielding context. It's target use-case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast.  
  <a href="class_d_x_1_1_spin_mutex.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_spin_locks_8h_source.html">SpinLocks.h</a>&gt;</code></p>
@@ -112,12 +113,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a5c4d4863862540c18c007501d87168d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land ...">SpinMutex</a> is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land as opposed to the traditional method of yielding context. It's target use-case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. </p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land ...">SpinMutex</a> is not a recursive mutex</dd></dl>
-<p>Sample of a <a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land ...">SpinMutex</a> protecting an int: </p>
+<div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-lan...">SpinMutex</a> is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land as opposed to the traditional method of yielding context. It's target use-case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-lan...">SpinMutex</a> is not a recursive mutex</dd></dl>
+<p>Sample of a <a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-lan...">SpinMutex</a> protecting an int: </p>
 <div class="fragment"><div class="line"><span class="keyword">mutable</span> SpinMutex myMutex;</div>
 <div class="line"><span class="keywordtype">int</span> myProtectedValue; </div>
-<div class="line"></div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> setMyValue(<span class="keywordtype">int</span> newValue)</div>
 <div class="line">{</div>
@@ -183,7 +183,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Feb 26 2014 21:44:32 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

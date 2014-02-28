@@ -3,7 +3,7 @@
 }
 
 
-\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast.  
+\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is a leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast.  
 
 
 
@@ -23,7 +23,7 @@ bool \hyperlink{class_d_x_1_1_spin_mutex_a5c1345257b4b39051d93d59460005cfc}{try\
 
 
 \subsection{Detailed Description}
-\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. 
+\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is a leightweight mutex class that makes use of C++11 atomics to spin out in active-\/\-C\-P\-U-\/land as opposed to the traditional method of yielding context. It's target use-\/case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. 
 
 \begin{DoxyNote}{Note}
 \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} is not a recursive mutex
@@ -32,7 +32,6 @@ Sample of a \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} protecting an int\
 \begin{DoxyCode}
 \textcolor{keyword}{mutable} SpinMutex myMutex;
 \textcolor{keywordtype}{int} myProtectedValue; 
-
 
 \textcolor{keywordtype}{void} setMyValue(\textcolor{keywordtype}{int} newValue)
 \{

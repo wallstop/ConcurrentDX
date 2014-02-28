@@ -19,7 +19,7 @@ namespace DX
     */
     #define CACHE_LINE_SIZE 64
 
-    /*! \brief SpinMutex is leightweight mutex class that makes use of C++11 atomics to spin out in
+    /*! \brief SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in
         active-CPU-land as opposed to the traditional method of yielding context. It's target 
         use-case is for code regions that aren't too highly contended, or for contended regions
         that execute fairly fast.
@@ -115,143 +115,7 @@ namespace DX
         m_lock = false;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /* \brief SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access)
-        and a single writer. Supports readers up to the maximum value of size_t for your system. 
-
-        Calls to lock() from readers will block if a writer holds the lock. Calls to lock() from
-        writers will block if there are any readers or writers holding onto the lock.
-
-        \note SpinRWMutex is easiest to use with SpinRWLock. SpinRWLock lets you "set-it-and-forget-it" 
-        in regards to remembering if you're a reader/writer.
-
-        \note SpinRWMutex does *NOT* check to ensure that calls to lock/unlock are called with the same
-        boolean. It does handle these cases (crash-wise), but calling lock(true) and unlock(false) from
-        the same thread does not unlock the writer lock.
-
-        Sample of a SpinRWMutex protecting a custom class MyClass:
-        \code
-
-        mutable SpinRWMutex myRWMutex;
-        MyClass myClass;
-
-        void setMyClass(const MyClass& other)
-        {
-            myRWMutex.lock(true); // true indicates a writer
-            myClass = other;
-            myRWMutex.unlock(true); // unlock my writer reference            
-        }
-
-        MyClass getMyClass() const
-        {
-            // static , thread-local object so it isn't constructed every function call, only copied
-            static thread_local MyClass ret;
-            myRWMutex.lock(false); // false indicates reader
-            ret = myClass;
-            myRwMutex.unlock(false); // unlock my reader reference
-            return ret;
-        }
-        \endcode
-    */
-    class SpinRWMutex
-    {
-    public:
-        SpinRWMutex();
-        ~SpinRWMutex();
-    
-        /*! \brief  Locks the mutex as a writer or a reader
-            \param[in] isWriter true indicates the caller is attempting to lock this as a writer,
-                                false indicates the caller is attempting to lock as a reader.
-            \note lock() is not recursive.
-            \note lock() is blocking.
-        */
-        void lock(bool isWriter);    
-        /*! \brief  Attempts to lock the mutex as a writer or a reader, continues execution regardless
-                    of mutex state.
-            \param[in] isWriter true indicates the caller is attempting to lock this as a writer,
-                                false indicates the caller is attempting to lock as a reader.
-            \note tryLock() is not recursive
-            \note tryLock() is non-blocking
-        */
-        //bool tryLock(bool isWriter);
-
-        /*! \brief Unlocks the mutex as a writer or a reader
-        */
-        void unlock(bool isWriter);
-    
-    private:
-        // Initial padding so we aren't overlapping some other potentially contended cache
-        char pad[CACHE_LINE_SIZE];
-        // Keeps track of the number of readers
-        std::atomic<size_t> m_readerLock;
-        // Atomics are padded so there's no false-sharing
-        char pad_0[CACHE_LINE_SIZE - sizeof(std::atomic<size_t>)];
-        // Keeps track of whether a writer currently has a handle on the SpinRWMutex
-        std::atomic<bool>   m_writerLock;
-        // Pad for anything allocated after our class
-        char pad_1[CACHE_LINE_SIZE - sizeof(std::atomic<bool>)];
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // impl
-
-    SpinRWMutex::SpinRWMutex() : m_readerLock(0)
-    {
-    }
-
-    SpinRWMutex::~SpinRWMutex()
-    {
-    }
-
-    void SpinRWMutex::lock(bool isWriter)
-    {
-        while(m_writerLock)
-        {
-            // Spin out waiting for all writers to finish
-        }
-        if(isWriter)
-        {
-            while(m_writerLock.exchange(true))
-            {
-                // Spin out waiting for all other writers to finish
-            }
-            while(m_readerLock > 0)
-            {
-                // Spin out waiting for all readers to finish
-            }
-        }
-        else
-        {
-            ++m_readerLock;
-        }
-    }
-
-    // Trying the lock might screw things up
-    //bool SpinRWMutex::tryLock(bool isWriter)
-    //{
-    //    if(isWriter)
-    //    {
-    //        return m_writerLock.exchange(true) && (m_readerLock > 0);
-    //    }
-    //    else
-    //    {
-    //        ++m_readerLock;
-    //        return m_writerLock;
-    //    }
-    //}
-
-    void SpinRWMutex::unlock(bool isWriter)
-    {
-        if(isWriter)
-            m_writerLock = false;
-        else if(m_readerLock > 0)
-            --m_readerLock;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /*! \brief SpinLock is a lock-guard style class that latches onto a mutex, locking it upon creation
@@ -318,6 +182,116 @@ namespace DX
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*! \brief SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access)
+        and a single writer. Supports readers up to the maximum value of size_t for your system. 
+
+        Calls to lock() from readers will block if a writer holds the lock. Calls to lock() from
+        writers will block if there are any readers or writers holding onto the lock.
+
+        \note SpinRWMutex is favored towards writers attempting to get the lock
+
+        \note SpinRWMutex is easiest to use with SpinRWLock. SpinRWLock lets you "set-it-and-forget-it" 
+        in regards to remembering if you're a reader/writer.
+
+        \note SpinRWMutex does *NOT* check to ensure that calls to lock/unlock are called with the same
+        boolean. It does handle these cases (crash-wise), but calling lock(true) and unlock(false) from
+        the same thread does not unlock the writer lock.
+
+        \code
+        mutable SpinRWMutex myRWMutex;
+        MyClass myClass;
+
+        void setMyClass(const MyClass& other)
+        {
+            myRWMutex.lock(true); // true indicates a writer
+            myClass = other;
+            myRWMutex.unlock(true); // unlock my writer reference            
+        }
+
+        MyClass getMyClass() const
+        {
+            // static , thread-local object so it isn't constructed every function call, only copied
+            static thread_local MyClass ret;
+            myRWMutex.lock(false); // false indicates reader
+            ret = myClass;
+            myRwMutex.unlock(false); // unlock my reader reference
+            return ret;
+        }
+        \endcode
+    */
+    class SpinRWMutex
+    {
+    public:
+        SpinRWMutex();
+        ~SpinRWMutex();
+    
+        /*! \brief  Locks the mutex as a writer or a reader
+            \param[in] isWriter true indicates the caller is attempting to lock this as a writer,
+                                false indicates the caller is attempting to lock as a reader.
+            \note lock() is not recursive.
+            \note lock() is blocking.
+        */
+        void lock(bool isWriter);    
+
+        /*! \brief Unlocks the mutex as a writer or a reader
+        */
+        void unlock(bool isWriter);
+    
+    private:
+        // Initial padding so we aren't overlapping some other potentially contended cache
+        char pad[CACHE_LINE_SIZE];
+        // Keeps track of the number of readers
+        std::atomic<size_t> m_readerLock;
+        // SpinMutex is already padded
+        SpinMutex m_lockMutex;
+        SpinMutex m_writerMutex;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    SpinRWMutex::SpinRWMutex() : m_readerLock(0)
+    {
+    }
+
+    SpinRWMutex::~SpinRWMutex()
+    {
+    }
+
+    void SpinRWMutex::lock(bool isWriter)
+    {
+        SpinLock _lock(m_lockMutex);
+
+        // Once a writer attempts to access, no more readers will be able to read
+        if(isWriter)
+        {
+            // TODO: SpinBarrierLock
+            m_writerMutex.lock();
+            while(m_readerLock > 0) 
+            {
+                // Spin out waiting for readers to finish
+            }
+        }
+        else
+        {
+            SpinLock _readLock(m_writerMutex);
+            ++m_readerLock;
+        }
+    }
+
+    void SpinRWMutex::unlock(bool isWriter)
+    {
+        if(!isWriter)
+            --m_readerLock;
+        else
+            m_writerMutex.unlock();
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     
     /*! \brief SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a 
         lock-guard style class, locking the SpinRWMutex upon construction and releasing the lock upon
@@ -375,5 +349,12 @@ namespace DX
         if(m_lock)
             m_lock->unlock(isWriter);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // TODO:
+    class SpinBarrier;
+    class CyclicSpinBarrier;    
 
 }

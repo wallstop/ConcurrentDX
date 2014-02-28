@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ConcurrentDX: Member List</title>
+<title>ConcurrentDX: ConcurrentDX</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -38,8 +38,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -59,13 +59,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
-    </ul>
-  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -80,24 +73,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><b>DX</b></li><li class="navelem"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">DX::SpinRWMutex Member List</div>  </div>
+<div class="title">ConcurrentDX </div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>, including all inherited members.</p>
-<table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56">lock</a>(bool isWriter)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>SpinRWMutex</b>() (defined in <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac82ed966423779e8e021cf8a227ca4d9">unlock</a>(bool isWriter)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>~SpinRWMutex</b>() (defined in <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a>)</td><td class="entry"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">DX::SpinRWMutex</a></td><td class="entry"></td></tr>
-</table></div><!-- contents -->
+<div class="textblock"><p>Leightweight, header-only C++ concurrency library</p>
+<h1>Using ConcurrentDX</h1>
+<p>ConcurrentDX is a header-only library. It relies on some C++ 11 features, however. You will need:</p>
+<ul>
+<li>A (mostly) C++11 standard-compliant C++ compiler (MSVC10 and later works)</li>
+<li>A copy of this repo</li>
+<li>To do the following with your project (where the include paths have been set up to point to whatever directory holds the repo):</li>
+</ul>
+<p>```c++ #include &lt;<a class="el" href="_concurrent_d_x_8h_source.html">ConcurrentDX/ConcurrentDX.h</a>&gt; ```</p>
+<ul>
+<li>...and that's it! All of the classes and containers are in the DX{} namespace</li>
+</ul>
+<h1>Documentation</h1>
+<p>Documentation can be found <a href="/html/index.html">here</a>. The best way to view the documentation is to clone the repo and open up the html off the disk. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
