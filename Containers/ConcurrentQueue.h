@@ -22,30 +22,30 @@ namespace DX
 
         bool    isEmpty() const;
         size_t  size() const;
-        T       pop();
+        bool    pop(T& in);
         void    push(const T&);
 
     private: 
 
-        template <typename T>
         struct Node
         {
             Node() : next(nullptr), data(nullptr){};
-            Node(T* data) :data(data), next(nullptr){};
+            Node(T* _data) :data(_data), next(nullptr){};
 
             T* data;
             std::atomic<Node*> next;
-            char pad_[CACHE_LINE_SIZE - sizeof(T*) - sizeof(std::atomic<Node*>)];
+            char pad_[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % sizeof(T*) - sizeof(std::atomic<Node*>))];
         };
 
-        Node<T>* m_start;
-        char pad_0[CACHE_LINE_SIZE - sizeof(Node<T>*)];
-        Node<T>* m_end;
-        char pad_1[CACHE_LINE_SIZE - sizeof(Node<T>*)];    
+        Node* m_start;
+        char pad_0[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % sizeof(Node*))];
+        Node* m_end;
+        char pad_1[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % sizeof(Node*))];    
         // SpinLocks are already padded on their own cache lines, so we don't need anymore padding
         SpinMutex pushMutex;
         SpinMutex popMutex;
         std::atomic<size_t> m_size;
+        char pad_2[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % sizeof(Node*))];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,33 +55,57 @@ namespace DX
     template <typename T>
     ConcurrentQueue<T>::ConcurrentQueue() : m_start(nullptr), m_end(nullptr), m_size(0)
     {
-        m_start = new Node<T>();
-        m_end = new Node<T>();
+        m_start = new Node();
+        m_end = m_start;
     }
 
     template <typename T>
     ConcurrentQueue<T>::ConcurrentQueue(const ConcurrentQueue& copy) 
         : m_start(nullptr), m_end(nullptr), m_size(0)
-    {
-        // TODO: Thread-safe copy constructor
+    {    
+        m_start = new Node();
+        m_end = m_start;
+
+        SpinLock popLock(copy.popMutex);
+        if(!copy.m_start)
+            return;
+
+        Node* currentNode = copy.m_start; 
+        while(currentNode->next)
+        {
+            currentNode = currentNode->next;
+            push(*(currentNode->data));
+            ++m_size;
+        }
+
+        m_end = currentNode;
     }
 
     template <typename T>
     ConcurrentQueue<T>::ConcurrentQueue(ConcurrentQueue&& move) 
         : m_start(nullptr), m_end(nullptr), m_size(0)
     {
-        // TODO: Thread-safe move constructor
+        SpinLock popLock(move.popMutex);
+        SpinLock pushLock(move.pushMutex);       
+
+        m_start = move.m_start;
+        move.m_start = nullptr;
+        m_end = move.m_end;
+        move.m_end = nullptr;
+        m_size = move.m_size;
+        move.m_size = 0;
     }
 
     template <typename T>
     ConcurrentQueue<T>::~ConcurrentQueue()
     {
-        // You never know how you get in these destructors, so *just* in case...
-        SpinLock pushLock(pushMutex);
+        // Thread-safe destructor, just in case
         SpinLock popLock(popMutex);
+        SpinLock pushLock(pushMutex);
+
         while(m_start)
         {
-            Node<T>* currentNode = m_start;
+            Node* currentNode = m_start;
             m_start = currentNode->next;
             delete currentNode->data;
             delete currentNode;
@@ -91,7 +115,7 @@ namespace DX
     template <typename T>
     bool ConcurrentQueue<T>::isEmpty() const
     {
-        return !m_start->next;
+        return m_start && !m_start->next.load();
     }
 
     template <typename T>
@@ -101,41 +125,51 @@ namespace DX
     }
 
     template <typename T>
-    T ConcurrentQueue<T>::pop()
+    bool ConcurrentQueue<T>::pop(T& in)
     {
-        T ret;
-        if(!m_start)
-            return ret;
 
-        Node<T>* temp;
+        // Unfurtunately, due to temporaries, this whole section needs to be locked down...
         SpinLock _lock(popMutex);
-        temp = m_start->next;
-        if(!temp) // No items left!
-            return ret;
-
-        if(temp)
-            ret = std::move(m_start->*data);
         
-        // Single pass deletion
-        // TODO: Consolidate this? We can pass this off to another thread, too
-        m_start = temp->next;
-        delete temp->data;
-        delete temp;
+        if(!m_start)
+            return false;
+
+        Node* oldStart = m_start;
+        Node* newStart = m_start->next;
+        if(!newStart) // No items left!
+            return false;
+
+        m_start = newStart;
+
+        const bool failed = !m_start->data;
+        if(!failed)
+            in = std::move(*(m_start->data));
+
+        if(oldStart->data)
+        {
+            delete oldStart->data;
+            oldStart->data = nullptr;
+        }
+        delete oldStart;
+        oldStart = nullptr;
+
         --m_size;
 
-        return ret;
+        return !failed;
     }
 
     template <typename T>
     void ConcurrentQueue<T>::push(const T& object)
     {
+        // push should never assign nullptr to m_end, so this check is thread-"ok"
         if(!m_end)
             return;
 
-        Node<T>* temp = new Node(new T(object));
+        Node* temp = new Node(new T(object));
         SpinLock _lock(pushMutex);
         m_end->next = temp;
         m_end = temp;
+
         ++m_size;
     }
 
