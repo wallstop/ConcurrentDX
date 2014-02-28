@@ -34,7 +34,7 @@ namespace DX
 
             T* data;
             std::atomic<Node*> next;
-            char pad_[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % sizeof(T*) - sizeof(std::atomic<Node*>))];
+            char pad_[CACHE_LINE_SIZE - (CACHE_LINE_SIZE % (sizeof(T*) + sizeof(std::atomic<Node*>)))];
         };
 
         Node* m_start;
