@@ -9,8 +9,6 @@
 #include "../CacheLine.h"
 #include "../Mutex/SpinLocks.h"
 
-#include <iostream>
-
 namespace DX
 {
 
@@ -125,8 +123,6 @@ namespace DX
                 delete currentNode->data;
                 currentNode->data = nullptr;
             }
-
-            assert(currentNode != nullptr);
             delete currentNode;
             currentNode = nullptr;
         }
@@ -188,22 +184,27 @@ namespace DX
         SpinLock pushLock(pushMutex);
 
         Node* temp = nullptr;
+        T* data = nullptr;
         short mallocCount = 0;
         do
         {
-            temp = new (std::nothrow) Node(new T(object));
+            if(data == nullptr)
+                data = new T(object);
+            if(data == nullptr)
+                continue;
+            temp = new (std::nothrow) Node(data);
         } 
         while(temp == nullptr && mallocCount++ < 25);
 
         assert(m_end != nullptr);
         assert(m_end->next.load() == nullptr);
-        assert(mallocCount == 0);
+        assert(mallocCount != 25);
         assert(temp != nullptr);
         if(m_end == nullptr)
             return;
         if(temp == nullptr)
         {
-            // new failed a bunch
+            // new failed too much
             return;
         }
         m_end->next = temp;
