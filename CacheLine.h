@@ -11,4 +11,4 @@
     multiple internal atomics / other variables to reduce the likelihood of cache contention and 
     false sharing
 */
-#define CACHE_LINE_SIZE 64
+#define CACHE_LINE_SIZE 64U

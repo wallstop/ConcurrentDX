@@ -74,10 +74,10 @@ namespace DX
 
     private:
         // Initial padding so we aren't overlapping some other potentially contended cache
-        char pad[CACHE_LINE_SIZE];
+        volatile char pad[CACHE_LINE_SIZE];
         std::atomic<bool> m_lock;
         // And then flesh out the rest of our pad
-        char pad_0[CACHE_LINE_SIZE - (CACHE_LINE_SIZE  %sizeof(std::atomic<bool>))];
+        volatile char pad_0[CACHE_LINE_SIZE - (sizeof(std::atomic<bool>) % CACHE_LINE_SIZE)];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +234,7 @@ namespace DX
     
     private:
         // Initial padding so we aren't overlapping some other potentially contended cache
-        char pad[CACHE_LINE_SIZE];
+        volatile char pad[CACHE_LINE_SIZE];
         // Keeps track of the number of readers
         std::atomic<size_t> m_readerLock;
         // SpinMutex is already padded
