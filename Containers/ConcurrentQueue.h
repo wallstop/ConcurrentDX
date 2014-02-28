@@ -9,6 +9,8 @@
 #include "../CacheLine.h"
 #include "../Mutex/SpinLocks.h"
 
+#include <iostream>
+
 namespace DX
 {
 
@@ -117,9 +119,16 @@ namespace DX
         while(m_start != nullptr)
         {
             Node* currentNode = m_start;
-            m_start = currentNode->next;
-            delete currentNode->data;
+            m_start = currentNode->next.load();
+            if(currentNode->data != nullptr)
+            {
+                delete currentNode->data;
+                currentNode->data = nullptr;
+            }
+
+            assert(currentNode != nullptr);
             delete currentNode;
+            currentNode = nullptr;
         }
     }
 
@@ -138,33 +147,36 @@ namespace DX
     template <typename T>
     bool ConcurrentQueue<T>::pop(T& in)
     {
+        SpinLock popLock(popMutex);
+        // Can we scope this tighter?
         assert(m_start != nullptr);
         if(m_start == nullptr)
             return false;
 
-        // Can we scope this tighter?
-        SpinLock _lock(popMutex);
-
-        Node* newStart = m_start->next;
-        if(newStart == nullptr) // No items left
+        Node* oldFront = m_start->next;
+        if(oldFront->next.load() == nullptr) // No items left
             return false;
 
-        Node* oldStart = m_start;
+        Node* newFront = oldFront->next.load();
 
-        m_start = newStart;
+        m_start->next = newFront;
 
-        const bool ok = m_start->data != nullptr;
+        assert(m_start->data == nullptr);
+        const bool ok = newFront->data != nullptr;
         if(ok)
+            in = std::move(*(newFront->data));
+        if(oldFront->data != nullptr)
         {
-            in = std::move(*(m_start->data));
-            delete oldStart->data;
-            oldStart->data = nullptr;
+            delete oldFront->data;
+            oldFront->data = nullptr;
         }
-        delete oldStart;
-        oldStart = nullptr;
+        assert(oldFront != nullptr);
+        delete oldFront;
+        oldFront = nullptr;
 
         --m_size;
 
+        assert(ok);
         return ok;
     }
 
@@ -172,16 +184,33 @@ namespace DX
     void ConcurrentQueue<T>::push(const T& object)
     {
         // push should never assign nullptr to m_end, so this check is thread-"ok"
-        assert(m_end != nullptr && m_end->next == nullptr);
+
+        SpinLock pushLock(pushMutex);
+
+        Node* temp = nullptr;
+        short mallocCount = 0;
+        do
+        {
+            temp = new (std::nothrow) Node(new T(object));
+        } 
+        while(temp == nullptr && mallocCount++ < 25);
+
+        assert(m_end != nullptr);
+        assert(m_end->next.load() == nullptr);
+        assert(mallocCount == 0);
+        assert(temp != nullptr);
         if(m_end == nullptr)
             return;
-
-        Node* temp = new Node(new T(object));
-        SpinLock _lock(pushMutex);
+        if(temp == nullptr)
+        {
+            // new failed a bunch
+            return;
+        }
         m_end->next = temp;
         m_end = temp;
 
-        assert(m_end != nullptr && m_end->next == nullptr);
+        assert(m_end != nullptr);
+        assert(m_end->next.load() == nullptr);
 
         ++m_size;
     }
