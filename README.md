@@ -1,6 +1,8 @@
 ConcurrentDX
 ============
 
+Disclaimer: I have no idea what I'm doing.
+
 Lightweight, header-only C++ concurrency library
 
 # Using ConcurrentDX
