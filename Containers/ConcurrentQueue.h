@@ -26,6 +26,11 @@ namespace DX
         ConcurrentQueue(ConcurrentQueue&& move);
         ~ConcurrentQueue();
 
+        // This blocks until the queue is non-empty, but offers no gaurantees after that
+        friend bool operator>>(ConcurrentQueue&, T&);        
+        friend ConcurrentQueue& operator<<(ConcurrentQueue&, const T&);
+       
+
         bool isEmpty() const;
         size_t size() const;
         bool pop(T& in);
@@ -51,7 +56,7 @@ namespace DX
         SpinMutex pushMutex;
         SpinMutex popMutex;
         std::atomic<size_t> m_size;
-        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>)) % CACHE_LINE_SIZE)];
+        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +76,6 @@ namespace DX
         : m_start(nullptr), m_end(nullptr), m_size(0)
     {
         m_start = new Node();
-        m_end = m_start;
         assert(m_start != nullptr);
 
         SpinLock popLock(copy.popMutex);
@@ -194,5 +198,28 @@ namespace DX
 
         assert(m_end != nullptr);
     }
+
+    template<typename T>
+    ConcurrentQueue<T>& operator<<(ConcurrentQueue<T>& queue, const T& object)
+    {
+        queue.push(object);
+        return queue;
+    }
+
+    template <typename T>
+    bool operator>>(ConcurrentQueue<T>& queue, T& object)
+    {
+        {
+            SpinLock _lock(queue.popMutex);
+            while(queue.isEmpty())
+            {
+                // Spin out
+            }
+        }
+        bool ok = queue.pop(object);
+        return ok;
+    }
+
+
 
 }

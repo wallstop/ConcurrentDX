@@ -74,10 +74,13 @@ namespace DX
 
     private:
         // Initial padding so we aren't overlapping some other potentially contended cache
-        volatile char pad[CACHE_LINE_SIZE];
+        volatile char pad_[CACHE_LINE_SIZE];
         std::atomic<bool> m_lock;
         // And then flesh out the rest of our pad
         volatile char pad_0[CACHE_LINE_SIZE - (sizeof(std::atomic<bool>) % CACHE_LINE_SIZE)];
+
+        SpinMutex(const SpinMutex&);
+        SpinMutex(SpinMutex&&);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,8 +159,10 @@ namespace DX
         SpinLock(SpinMutex& mutex);
         ~SpinLock();
     private:
-
         SpinMutex* m_mutex;
+
+        SpinLock(const SpinLock&);
+        SpinLock(SpinLock&&);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,12 +239,15 @@ namespace DX
     
     private:
         // Initial padding so we aren't overlapping some other potentially contended cache
-        volatile char pad[CACHE_LINE_SIZE];
+        volatile char pad_[CACHE_LINE_SIZE];
         // Keeps track of the number of readers
         std::atomic<size_t> m_readerLock;
         // SpinMutex is already padded
         SpinMutex m_lockMutex;
         SpinMutex m_writerMutex;
+
+        SpinRWMutex(const SpinRWMutex&);
+        SpinRWMutex(SpinRWMutex&&);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,6 +261,8 @@ namespace DX
     SpinRWMutex::~SpinRWMutex()
     {
     }
+
+    // TODO: CHECK
 
     void SpinRWMutex::lock(bool isWriter)
     {
@@ -325,6 +335,9 @@ namespace DX
     private:
         bool isWriter;
         SpinRWMutex* m_lock;
+
+        SpinRWLock(const SpinRWLock&);
+        SpinRWLock(SpinRWLock&&);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,8 +360,123 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // TODO:
-    class SpinBarrier;
-    class CyclicSpinBarrier;    
+    class Barrier
+    {
+    public:
+        explicit Barrier(size_t numThreads);
+        virtual ~Barrier();
 
+        virtual void wait() = 0;
+
+    protected:
+        volatile char pad_[CACHE_LINE_SIZE];
+        std::atomic<size_t> m_count;
+        volatile char pad_0[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
+
+    private:
+        Barrier(const Barrier&);
+        Barrier(Barrier&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    Barrier::Barrier(size_t numThreads) : m_count(numThreads)
+    {
+    }
+
+    Barrier::~Barrier()
+    {
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    class SpinBarrier : public Barrier
+    {
+    public:
+        SpinBarrier(size_t numThreads = 1);
+        ~SpinBarrier();
+
+        void wait();
+
+    private:
+        SpinBarrier(const SpinBarrier&);
+        SpinBarrier(SpinBarrier&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    SpinBarrier::SpinBarrier(size_t numThreads) : Barrier(numThreads)
+    {
+    }
+
+    SpinBarrier::~SpinBarrier()
+    {
+    }
+
+    void SpinBarrier::wait()
+    {
+        if(m_count > 0)
+            --m_count;
+        while(m_count > 0)
+        {
+            // Spin out
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    class CyclicSpinBarrier : public Barrier
+    {
+    public:
+        CyclicSpinBarrier(size_t numThreads = 1);
+        ~CyclicSpinBarrier();
+
+        void wait();
+    private:
+        const size_t m_initial;
+        SpinRWMutex m_reset;
+
+        CyclicSpinBarrier(const CyclicSpinBarrier&);
+        CyclicSpinBarrier(CyclicSpinBarrier&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    CyclicSpinBarrier::CyclicSpinBarrier(size_t numThreads) 
+        : Barrier(numThreads), m_initial(numThreads)
+    {
+    }
+
+    CyclicSpinBarrier::~CyclicSpinBarrier()
+    {
+    }
+
+    // TODO: 
+
+    //void CyclicSpinBarrier::wait()
+    //{
+    //    // Calls to wait while the counter is still resetting will block here
+    //    {
+    //        SpinRWLock _lock(m_reset, m_count == 0);
+    //    }
+    //    const size_t numInQueue = m_count > 0 ? m_count-- : 0;
+    //    {
+    //        SpinRWLock _lock(m_reset, m_count == 0);
+    //        while(m_count > 0)
+    //        {
+    //            // Spin out
+    //        }
+
+    //        if(numInQueue == 0)
+    //            m_count = m_initial;
+    //    }
+    //}
 }
