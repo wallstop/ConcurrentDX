@@ -26,7 +26,7 @@ namespace DX
         ConcurrentQueue(ConcurrentQueue&& move);
         ~ConcurrentQueue();
 
-        // This blocks until the queue is non-empty, but offers no gaurantees after that
+        // This blocks until the operator is able to return a T
         friend bool operator>>(ConcurrentQueue&, T&);        
         friend ConcurrentQueue& operator<<(ConcurrentQueue&, const T&);
        
@@ -210,17 +210,14 @@ namespace DX
     template <typename T>
     bool operator>>(ConcurrentQueue<T>& queue, T& object)
     {
+        bool inserted = false;
+        do
         {
-            SpinLock _lock(queue.popMutex);
-            while(queue.isEmpty())
-            {
-                // Spin out
-            }
+            inserted = queue.pop(object);
         }
-        bool ok = queue.pop(object);
-        return ok;
+        while(!inserted);
+
+        return inserted;
     }
-
-
 
 }
