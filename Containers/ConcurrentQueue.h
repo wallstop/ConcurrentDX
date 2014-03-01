@@ -40,7 +40,7 @@ namespace DX
 
             T* data;
             std::atomic<Node*> next;
-            volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
+            //volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
         };
 
         Node* m_start;
@@ -150,7 +150,7 @@ namespace DX
             return false;
 
         Node* oldFront = m_start->next;
-        if(oldFront->next.load() == nullptr) // No items left
+        if(oldFront == nullptr) // No items left
             return false;
 
         Node* newFront = oldFront->next.load();
@@ -158,9 +158,10 @@ namespace DX
         m_start->next = newFront;
 
         assert(m_start->data == nullptr);
-        const bool ok = newFront->data != nullptr;
+
+        const bool ok = (oldFront->data != nullptr);
         if(ok)
-            in = std::move(*(newFront->data));
+            in = std::move(*(oldFront->data));
         if(oldFront->data != nullptr)
         {
             delete oldFront->data;
@@ -183,22 +184,10 @@ namespace DX
 
         SpinLock pushLock(pushMutex);
 
-        Node* temp = nullptr;
-        T* data = nullptr;
-        short mallocCount = 0;
-        do
-        {
-            if(data == nullptr)
-                data = new T(object);
-            if(data == nullptr)
-                continue;
-            temp = new (std::nothrow) Node(data);
-        } 
-        while(temp == nullptr && mallocCount++ < 25);
+        Node* temp = new (std::nothrow) Node(new T(object));
 
         assert(m_end != nullptr);
         assert(m_end->next.load() == nullptr);
-        assert(mallocCount != 25);
         assert(temp != nullptr);
         if(m_end == nullptr)
             return;
