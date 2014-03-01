@@ -40,7 +40,7 @@ namespace DX
 
             T* data;
             std::atomic<Node*> next;
-            //volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
+            volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
         };
 
         Node* m_start;
@@ -143,66 +143,57 @@ namespace DX
     template <typename T>
     bool ConcurrentQueue<T>::pop(T& in)
     {
-        SpinLock popLock(popMutex);
-        // Can we scope this tighter?
         assert(m_start != nullptr);
         if(m_start == nullptr)
             return false;
 
-        Node* oldFront = m_start->next;
-        if(oldFront == nullptr) // No items left
-            return false;
+        Node* newStart = nullptr;
+        Node* oldStart = nullptr;
 
-        Node* newFront = oldFront->next.load();
-
-        m_start->next = newFront;
-
-        assert(m_start->data == nullptr);
-
-        const bool ok = (oldFront->data != nullptr);
-        if(ok)
-            in = std::move(*(oldFront->data));
-        if(oldFront->data != nullptr)
         {
-            delete oldFront->data;
-            oldFront->data = nullptr;
+            SpinLock popLock(popMutex);
+
+            newStart = m_start->next.load();
+            if(newStart == nullptr) // No items left
+                return false;
+
+            oldStart = m_start;
+            m_start = newStart;
+
+            assert(m_start->data != nullptr);
+            in = std::move(*(m_start->data));
+            assert(m_size > 0);
+            --m_size;
         }
-        assert(oldFront != nullptr);
-        delete oldFront;
-        oldFront = nullptr;
 
-        --m_size;
+        delete oldStart->data;
+        oldStart->data = nullptr;
+        oldStart->next = nullptr;
+        delete oldStart;
+        oldStart = nullptr;
 
-        assert(ok);
-        return ok;
+        return true;
     }
 
     template <typename T>
     void ConcurrentQueue<T>::push(const T& object)
     {
-        // push should never assign nullptr to m_end, so this check is thread-"ok"
-
-        SpinLock pushLock(pushMutex);
-
-        Node* temp = new (std::nothrow) Node(new T(object));
-
         assert(m_end != nullptr);
-        assert(m_end->next.load() == nullptr);
-        assert(temp != nullptr);
         if(m_end == nullptr)
             return;
+
+        Node* temp = new (std::nothrow) Node(new T(object));
+        assert(temp != nullptr);
         if(temp == nullptr)
-        {
-            // new failed too much
             return;
+        {
+	        SpinLock pushLock(pushMutex);
+            m_end->next = temp;
+            m_end = temp;
+            ++m_size;
         }
-        m_end->next = temp;
-        m_end = temp;
 
         assert(m_end != nullptr);
-        assert(m_end->next.load() == nullptr);
-
-        ++m_size;
     }
 
 }
