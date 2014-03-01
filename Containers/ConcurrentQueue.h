@@ -187,6 +187,7 @@ namespace DX
 
         Node* temp = new (std::nothrow) Node(new T(object));
         assert(temp != nullptr);
+        assert(temp->data != nullptr);
         if(temp == nullptr)
             return;
         {

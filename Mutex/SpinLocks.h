@@ -171,12 +171,14 @@ namespace DX
 
     SpinLock::SpinLock(SpinMutex& _mutex) : m_mutex(&_mutex)
     {
-        m_mutex->lock();
+        if(m_mutex)
+            m_mutex->lock();
     }
 
     SpinLock::~SpinLock()
     {
-        m_mutex->unlock();
+        if(m_mutex)
+            m_mutex->unlock();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,6 +367,21 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    //class SpinRecursiveMutex
+    //{
+    //public:
+    //    SpinRecursiveMutex();
+    //    ~SpinRecursiveMutex();
+
+    //private:
+
+
+
+    //};
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     class Barrier
     {
     public:
@@ -464,24 +481,30 @@ namespace DX
     {
     }
 
-    // TODO: 
-
-    //void CyclicSpinBarrier::wait()
-    //{
-    //    // Calls to wait while the counter is still resetting will block here
-    //    {
-    //        SpinRWLock _lock(m_reset, m_count == 0);
-    //    }
-    //    const size_t numInQueue = m_count > 0 ? m_count-- : 0;
-    //    {
-    //        SpinRWLock _lock(m_reset, m_count == 0);
-    //        while(m_count > 0)
-    //        {
-    //            // Spin out
-    //        }
-
-    //        if(numInQueue == 0)
-    //            m_count = m_initial;
-    //    }
-    //}
+    void CyclicSpinBarrier::wait()
+    {
+        // Calls to wait while the counter is still resetting will block here
+        m_reset.lock(false);
+        const size_t count = m_count > 0 ? --m_count : 0;
+        {
+            if(count == 0)
+            {
+                // Relinquish our hold on the reentrant lock, grab one as a writer
+                m_reset.unlock(false);
+                m_reset.lock(true);
+            }
+            while(m_count > 0)
+            {
+                // Spin out
+            }
+            if(count == 0)
+            {
+                m_count = m_initial;
+                m_reset.unlock(true);
+            }
+        }
+        // The "resetter" has already unlocked their hold on the reentrant lock
+        if(count != 0)
+            m_reset.unlock(false);
+    }
 }
