@@ -1,9 +1,9 @@
 ConcurrentDX
 ============
 
-Disclaimer: I have no idea what I'm doing.
-
 Lightweight, header-only C++ concurrency library
+
+*Disclaimer: I have no idea what I'm doing.*
 
 # Using ConcurrentDX
 ConcurrentDX is a header-only library. It relies on some C++ 11 features, however. You will need:
