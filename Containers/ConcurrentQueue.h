@@ -51,7 +51,7 @@ namespace DX
         SpinMutex pushMutex;
         SpinMutex popMutex;
         std::atomic<size_t> m_size;
-        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(Node*) % CACHE_LINE_SIZE)];
+        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>)) % CACHE_LINE_SIZE)];
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,6 @@ namespace DX
 
         delete oldStart->data;
         oldStart->data = nullptr;
-        oldStart->next = nullptr;
         delete oldStart;
         oldStart = nullptr;
 
