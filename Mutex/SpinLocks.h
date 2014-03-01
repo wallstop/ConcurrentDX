@@ -288,9 +288,14 @@ namespace DX
     void SpinRWMutex::unlock(bool isWriter)
     {
         if(!isWriter)
-            --m_readerLock;
+        {
+            if(m_readerLock > 0)
+                --m_readerLock;
+        }
         else
+        {
             m_writerMutex.unlock();
+        }
     }
 
 
