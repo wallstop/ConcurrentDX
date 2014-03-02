@@ -63,6 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -88,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_d_x_1_1_spin_mutex-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DX::SpinMutex Class Reference</div>  </div>
@@ -98,19 +100,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="class_d_x_1_1_spin_mutex.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_spin_locks_8h_source.html">SpinLocks.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for DX::SpinMutex:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_d_x_1_1_spin_mutex.png" usemap="#DX::SpinMutex_map" alt=""/>
+  <map id="DX::SpinMutex_map" name="DX::SpinMutex_map">
+<area href="class_d_x_1_1_mutex.html" alt="DX::Mutex" shape="rect" coords="81,0,233,24"/>
+<area href="class_d_x_1_1_spin_recursive_mutex.html" alt="DX::SpinRecursiveMutex" shape="rect" coords="0,112,152,136"/>
+<area href="class_d_x_1_1_spin_yield_mutex.html" alt="DX::SpinYieldMutex" shape="rect" coords="162,112,314,136"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad550ac8a2a96dbc0e53bb52c58c4a2e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#ad550ac8a2a96dbc0e53bb52c58c4a2e9">lock</a> ()</td></tr>
-<tr class="memdesc:ad550ac8a2a96dbc0e53bb52c58c4a2e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the mutex. Further calls to lock will block until there is a call to <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c4d4863862540c18c007501d87168d6" title="Unlocks the mutex. This call is non-blocking, because having it otherwise doesn&#39;t make any sense...">unlock()</a>.  <a href="#ad550ac8a2a96dbc0e53bb52c58c4a2e9">More...</a><br/></td></tr>
-<tr class="separator:ad550ac8a2a96dbc0e53bb52c58c4a2e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c1345257b4b39051d93d59460005cfc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc">tryLock</a> ()</td></tr>
-<tr class="memdesc:a5c1345257b4b39051d93d59460005cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to lock the mutex. <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking, meaning that regardless of the state of the mutex when <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is called, execution will continue.  <a href="#a5c1345257b4b39051d93d59460005cfc">More...</a><br/></td></tr>
-<tr class="separator:a5c1345257b4b39051d93d59460005cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c4d4863862540c18c007501d87168d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c4d4863862540c18c007501d87168d6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#a5c4d4863862540c18c007501d87168d6">unlock</a> ()</td></tr>
-<tr class="memdesc:a5c4d4863862540c18c007501d87168d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks the mutex. This call is non-blocking, because having it otherwise doesn't make any sense. <br/></td></tr>
-<tr class="separator:a5c4d4863862540c18c007501d87168d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133720662c9262696659d4dcd6d3adec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#a133720662c9262696659d4dcd6d3adec">lock</a> () const </td></tr>
+<tr class="memdesc:a133720662c9262696659d4dcd6d3adec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the mutex. Further calls to lock will block until there is a call to <a class="el" href="class_d_x_1_1_spin_mutex.html#a34fe253a0ee2c6030a808403cdd4b216" title="Unlocks the mutex. This call is non-blocking, because having it otherwise doesn&#39;t make any sense...">unlock()</a>.  <a href="#a133720662c9262696659d4dcd6d3adec">More...</a><br/></td></tr>
+<tr class="separator:a133720662c9262696659d4dcd6d3adec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395c28ec936bce90ac562039168a540a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a">tryLock</a> () const </td></tr>
+<tr class="memdesc:a395c28ec936bce90ac562039168a540a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to lock the mutex. <a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking, meaning that regardless of the state of the mutex when <a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is called, execution will continue.  <a href="#a395c28ec936bce90ac562039168a540a">More...</a><br/></td></tr>
+<tr class="separator:a395c28ec936bce90ac562039168a540a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34fe253a0ee2c6030a808403cdd4b216"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34fe253a0ee2c6030a808403cdd4b216"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_mutex.html#a34fe253a0ee2c6030a808403cdd4b216">unlock</a> () const </td></tr>
+<tr class="memdesc:a34fe253a0ee2c6030a808403cdd4b216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks the mutex. This call is non-blocking, because having it otherwise doesn't make any sense. <br/></td></tr>
+<tr class="separator:a34fe253a0ee2c6030a808403cdd4b216"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a6583b897a71d82aa083b8fa777b235d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6583b897a71d82aa083b8fa777b235d7"></a>
+volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_</b> [CACHE_LINE_SIZE]</td></tr>
+<tr class="separator:a6583b897a71d82aa083b8fa777b235d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e212383a0fe9738c059fa79ccf6d06f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e212383a0fe9738c059fa79ccf6d06f"></a>
+std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_lock</b></td></tr>
+<tr class="separator:a3e212383a0fe9738c059fa79ccf6d06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8a4a731d0d9c17a192ab8d93988af64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8a4a731d0d9c17a192ab8d93988af64"></a>
+volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_0</b> [CACHE_LINE_SIZE-(sizeof(std::atomic&lt; bool &gt;)%CACHE_LINE_SIZE)]</td></tr>
+<tr class="separator:ab8a4a731d0d9c17a192ab8d93988af64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_mutex.html" title="SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-lan...">SpinMutex</a> is a leightweight mutex class that makes use of C++11 atomics to spin out in active-CPU-land as opposed to the traditional method of yielding context. It's target use-case is for code regions that aren't too highly contended, or for contended regions that execute fairly fast. </p>
@@ -137,43 +162,65 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="line">}</div>
 </div><!-- fragment --><p>Please note that the above example could also be accomplished by making the type of myProtectedValue std::atomic&lt;int&gt;, but the usage still stands. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad550ac8a2a96dbc0e53bb52c58c4a2e9"></a>
+<a class="anchor" id="a133720662c9262696659d4dcd6d3adec"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void DX::SpinMutex::lock </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Locks the mutex. Further calls to lock will block until there is a call to <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c4d4863862540c18c007501d87168d6" title="Unlocks the mutex. This call is non-blocking, because having it otherwise doesn&#39;t make any sense...">unlock()</a>. </p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html#ad550ac8a2a96dbc0e53bb52c58c4a2e9" title="Locks the mutex. Further calls to lock will block until there is a call to unlock(). ">lock()</a> is not recursive. </dd>
+<p>Locks the mutex. Further calls to lock will block until there is a call to <a class="el" href="class_d_x_1_1_spin_mutex.html#a34fe253a0ee2c6030a808403cdd4b216" title="Unlocks the mutex. This call is non-blocking, because having it otherwise doesn&#39;t make any sense...">unlock()</a>. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html#a133720662c9262696659d4dcd6d3adec" title="Locks the mutex. Further calls to lock will block until there is a call to unlock(). ">lock()</a> is not recursive. </dd>
 <dd>
-<a class="el" href="class_d_x_1_1_spin_mutex.html#ad550ac8a2a96dbc0e53bb52c58c4a2e9" title="Locks the mutex. Further calls to lock will block until there is a call to unlock(). ">lock()</a> is blocking. </dd></dl>
+<a class="el" href="class_d_x_1_1_spin_mutex.html#a133720662c9262696659d4dcd6d3adec" title="Locks the mutex. Further calls to lock will block until there is a call to unlock(). ">lock()</a> is blocking. </dd></dl>
+
+<p>Implements <a class="el" href="class_d_x_1_1_mutex.html">DX::Mutex</a>.</p>
+
+<p>Reimplemented in <a class="el" href="class_d_x_1_1_spin_yield_mutex.html#ad2229f4e9acd7c6bab9e2fbe029b1f1f">DX::SpinYieldMutex</a>, and <a class="el" href="class_d_x_1_1_spin_recursive_mutex.html#a928053922f1a59db49d6027d108b88ba">DX::SpinRecursiveMutex</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5c1345257b4b39051d93d59460005cfc"></a>
+<a class="anchor" id="a395c28ec936bce90ac562039168a540a"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool DX::SpinMutex::tryLock </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Attempts to lock the mutex. <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking, meaning that regardless of the state of the mutex when <a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is called, execution will continue. </p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is not recursive. </dd>
+<p>Attempts to lock the mutex. <a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking, meaning that regardless of the state of the mutex when <a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is called, execution will continue. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is not recursive. </dd>
 <dd>
-<a class="el" href="class_d_x_1_1_spin_mutex.html#a5c1345257b4b39051d93d59460005cfc" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking. </dd></dl>
+<a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_d_x_1_1_spin_yield_mutex.html#acd1ed560cf8afd7363a520beff4b5455">DX::SpinYieldMutex</a>, and <a class="el" href="class_d_x_1_1_spin_recursive_mutex.html#a9150334e2741a1de69f177491214cf15">DX::SpinRecursiveMutex</a>.</p>
 
 </div>
 </div>
@@ -183,7 +230,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 1 2014 19:27:24 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

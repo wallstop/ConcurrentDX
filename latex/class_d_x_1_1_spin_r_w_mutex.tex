@@ -13,9 +13,9 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{lock} (bool is\-Writer)
+void \hyperlink{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{lock} (bool is\-Writer) const 
 \begin{DoxyCompactList}\small\item\em Locks the mutex as a writer or a reader. \end{DoxyCompactList}\item 
-\hypertarget{class_d_x_1_1_spin_r_w_mutex_ac82ed966423779e8e021cf8a227ca4d9}{void \hyperlink{class_d_x_1_1_spin_r_w_mutex_ac82ed966423779e8e021cf8a227ca4d9}{unlock} (bool is\-Writer)}\label{class_d_x_1_1_spin_r_w_mutex_ac82ed966423779e8e021cf8a227ca4d9}
+\hypertarget{class_d_x_1_1_spin_r_w_mutex_a5475d76504c9c0519bea4fa68c995f9d}{void \hyperlink{class_d_x_1_1_spin_r_w_mutex_a5475d76504c9c0519bea4fa68c995f9d}{unlock} (bool is\-Writer) const }\label{class_d_x_1_1_spin_r_w_mutex_a5475d76504c9c0519bea4fa68c995f9d}
 
 \begin{DoxyCompactList}\small\item\em Unlocks the mutex as a writer or a reader. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -23,7 +23,7 @@ void \hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{
 \subsection{Detailed Description}
 \hyperlink{class_d_x_1_1_spin_r_w_mutex}{Spin\-R\-W\-Mutex} is a leightweight mutex that supports multiple readers (const-\/only access) and a single writer. Supports readers up to the maximum value of size\-\_\-t for your system. 
 
-Calls to \hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{lock()} from readers will block if a writer holds the lock. Calls to \hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{lock()} from writers will block if there are any readers or writers holding onto the lock.
+Calls to \hyperlink{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{lock()} from readers will block if a writer holds the lock. Calls to \hyperlink{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{lock()} from writers will block if there are any readers or writers holding onto the lock.
 
 \begin{DoxyNote}{Note}
 \hyperlink{class_d_x_1_1_spin_r_w_mutex}{Spin\-R\-W\-Mutex} is favored towards writers attempting to get the lock
@@ -57,13 +57,13 @@ MyClass getMyClass()\textcolor{keyword}{ const}
  
 
 \subsection{Member Function Documentation}
-\hypertarget{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{\index{D\-X\-::\-Spin\-R\-W\-Mutex@{D\-X\-::\-Spin\-R\-W\-Mutex}!lock@{lock}}
+\hypertarget{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{\index{D\-X\-::\-Spin\-R\-W\-Mutex@{D\-X\-::\-Spin\-R\-W\-Mutex}!lock@{lock}}
 \index{lock@{lock}!DX::SpinRWMutex@{D\-X\-::\-Spin\-R\-W\-Mutex}}
 \subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}void D\-X\-::\-Spin\-R\-W\-Mutex\-::lock (
 \begin{DoxyParamCaption}
 \item[{bool}]{is\-Writer}
 \end{DoxyParamCaption}
-)}}\label{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}
+) const}}\label{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}
 
 
 Locks the mutex as a writer or a reader. 
@@ -74,9 +74,9 @@ Locks the mutex as a writer or a reader.
 \hline
 \end{DoxyParams}
 \begin{DoxyNote}{Note}
-\hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{lock()} is not recursive. 
+\hyperlink{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{lock()} is not recursive. 
 
-\hyperlink{class_d_x_1_1_spin_r_w_mutex_ac2b4ebd8c8bd297c5e2d907c92c75a56}{lock()} is blocking. 
+\hyperlink{class_d_x_1_1_spin_r_w_mutex_a8fe3a96117f0c9594135747f12548add}{lock()} is blocking. 
 \end{DoxyNote}
 
 

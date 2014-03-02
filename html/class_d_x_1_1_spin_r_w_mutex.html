@@ -63,6 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -101,17 +102,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac2b4ebd8c8bd297c5e2d907c92c75a56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56">lock</a> (bool isWriter)</td></tr>
-<tr class="memdesc:ac2b4ebd8c8bd297c5e2d907c92c75a56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the mutex as a writer or a reader.  <a href="#ac2b4ebd8c8bd297c5e2d907c92c75a56">More...</a><br/></td></tr>
-<tr class="separator:ac2b4ebd8c8bd297c5e2d907c92c75a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac82ed966423779e8e021cf8a227ca4d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac82ed966423779e8e021cf8a227ca4d9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac82ed966423779e8e021cf8a227ca4d9">unlock</a> (bool isWriter)</td></tr>
-<tr class="memdesc:ac82ed966423779e8e021cf8a227ca4d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks the mutex as a writer or a reader. <br/></td></tr>
-<tr class="separator:ac82ed966423779e8e021cf8a227ca4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fe3a96117f0c9594135747f12548add"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a8fe3a96117f0c9594135747f12548add">lock</a> (bool isWriter) const </td></tr>
+<tr class="memdesc:a8fe3a96117f0c9594135747f12548add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the mutex as a writer or a reader.  <a href="#a8fe3a96117f0c9594135747f12548add">More...</a><br/></td></tr>
+<tr class="separator:a8fe3a96117f0c9594135747f12548add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5475d76504c9c0519bea4fa68c995f9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5475d76504c9c0519bea4fa68c995f9d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a5475d76504c9c0519bea4fa68c995f9d">unlock</a> (bool isWriter) const </td></tr>
+<tr class="memdesc:a5475d76504c9c0519bea4fa68c995f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks the mutex as a writer or a reader. <br/></td></tr>
+<tr class="separator:a5475d76504c9c0519bea4fa68c995f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> is a leightweight mutex that supports multiple readers (const-only access) and a single writer. Supports readers up to the maximum value of size_t for your system. </p>
-<p>Calls to <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56" title="Locks the mutex as a writer or a reader. ">lock()</a> from readers will block if a writer holds the lock. Calls to <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56" title="Locks the mutex as a writer or a reader. ">lock()</a> from writers will block if there are any readers or writers holding onto the lock.</p>
+<p>Calls to <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a8fe3a96117f0c9594135747f12548add" title="Locks the mutex as a writer or a reader. ">lock()</a> from readers will block if a writer holds the lock. Calls to <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a8fe3a96117f0c9594135747f12548add" title="Locks the mutex as a writer or a reader. ">lock()</a> from writers will block if there are any readers or writers holding onto the lock.</p>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> is favored towards writers attempting to get the lock</dd>
 <dd>
 <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> is easiest to use with <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> lets you "set-it-and-forget-it" in regards to remembering if you're a reader/writer.</dd>
@@ -137,7 +138,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="line">    <span class="keywordflow">return</span> ret;</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac2b4ebd8c8bd297c5e2d907c92c75a56"></a>
+<a class="anchor" id="a8fe3a96117f0c9594135747f12548add"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -146,7 +147,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>isWriter</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,9 +159,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56" title="Locks the mutex as a writer or a reader. ">lock()</a> is not recursive. </dd>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a8fe3a96117f0c9594135747f12548add" title="Locks the mutex as a writer or a reader. ">lock()</a> is not recursive. </dd>
 <dd>
-<a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#ac2b4ebd8c8bd297c5e2d907c92c75a56" title="Locks the mutex as a writer or a reader. ">lock()</a> is blocking. </dd></dl>
+<a class="el" href="class_d_x_1_1_spin_r_w_mutex.html#a8fe3a96117f0c9594135747f12548add" title="Locks the mutex as a writer or a reader. ">lock()</a> is blocking. </dd></dl>
 
 </div>
 </div>
@@ -170,7 +171,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 1 2014 19:27:24 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

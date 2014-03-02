@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['spinlock',['SpinLock',['../class_d_x_1_1_spin_lock.html#a70382a476699db23556e86fbf7c0040f',1,'DX::SpinLock']]],
-  ['spinrwlock',['SpinRWLock',['../class_d_x_1_1_spin_r_w_lock.html#a69454faf90759dcb64cca55d827f838d',1,'DX::SpinRWLock']]]
+  ['spinlock',['SpinLock',['../class_d_x_1_1_spin_lock.html#a338ff0b08d3517e734fbf190bfff7e24',1,'DX::SpinLock']]],
+  ['spinrwlock',['SpinRWLock',['../class_d_x_1_1_spin_r_w_lock.html#a031480610e0da0bd664ada662057b99c',1,'DX::SpinRWLock']]]
 ];

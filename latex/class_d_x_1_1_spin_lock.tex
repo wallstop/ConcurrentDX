@@ -10,10 +10,16 @@
 
 {\ttfamily \#include $<$Spin\-Locks.\-h$>$}
 
+Inheritance diagram for D\-X\-:\-:Spin\-Lock\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_d_x_1_1_spin_lock}
+\end{center}
+\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_d_x_1_1_spin_lock_a70382a476699db23556e86fbf7c0040f}{Spin\-Lock} (\hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} \&mutex)
+\hyperlink{class_d_x_1_1_spin_lock_a338ff0b08d3517e734fbf190bfff7e24}{Spin\-Lock} (const \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} \&mutex)
 \end{DoxyCompactItemize}
 
 
@@ -32,7 +38,7 @@ SpinMutex myMutex;
 
 \textcolor{keywordtype}{void} getMyClass()\textcolor{keyword}{ const}
 \textcolor{keyword}{}\{
-    \hyperlink{class_d_x_1_1_spin_lock_a70382a476699db23556e86fbf7c0040f}{SpinLock} \_lock(myMutex);
+    \hyperlink{class_d_x_1_1_spin_lock_a338ff0b08d3517e734fbf190bfff7e24}{SpinLock} \_lock(myMutex);
     \textcolor{keywordflow}{return} myClass; \textcolor{comment}{// After the return, \_lock destroys itself, automatically unlocking myMutex}
 \}
 \end{DoxyCode}
@@ -47,7 +53,7 @@ SpinMutex myMutex;
 \{
     \textcolor{comment}{// The below scope is thread-safe, the rest of the function isn't}
     \{
-        \hyperlink{class_d_x_1_1_spin_lock_a70382a476699db23556e86fbf7c0040f}{SpinLock} \_lock(myMutex);
+        \hyperlink{class_d_x_1_1_spin_lock_a338ff0b08d3517e734fbf190bfff7e24}{SpinLock} \_lock(myMutex);
         myClass = other;
     \}
     \textcolor{comment}{// Continue doing things here - the mutex is unlocked!}
@@ -56,13 +62,13 @@ SpinMutex myMutex;
  
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_d_x_1_1_spin_lock_a70382a476699db23556e86fbf7c0040f}{\index{D\-X\-::\-Spin\-Lock@{D\-X\-::\-Spin\-Lock}!Spin\-Lock@{Spin\-Lock}}
+\hypertarget{class_d_x_1_1_spin_lock_a338ff0b08d3517e734fbf190bfff7e24}{\index{D\-X\-::\-Spin\-Lock@{D\-X\-::\-Spin\-Lock}!Spin\-Lock@{Spin\-Lock}}
 \index{Spin\-Lock@{Spin\-Lock}!DX::SpinLock@{D\-X\-::\-Spin\-Lock}}
 \subsubsection[{Spin\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}D\-X\-::\-Spin\-Lock\-::\-Spin\-Lock (
 \begin{DoxyParamCaption}
-\item[{{\bf Spin\-Mutex} \&}]{mutex}
+\item[{const {\bf Spin\-Mutex} \&}]{mutex}
 \end{DoxyParamCaption}
-)}}\label{class_d_x_1_1_spin_lock_a70382a476699db23556e86fbf7c0040f}
+)}}\label{class_d_x_1_1_spin_lock_a338ff0b08d3517e734fbf190bfff7e24}
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em mutex} & The \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} the lock will lock and guard \\

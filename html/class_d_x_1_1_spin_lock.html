@@ -63,6 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -98,11 +99,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="class_d_x_1_1_spin_lock.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_spin_locks_8h_source.html">SpinLocks.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for DX::SpinLock:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_d_x_1_1_spin_lock.png" usemap="#DX::SpinLock_map" alt=""/>
+  <map id="DX::SpinLock_map" name="DX::SpinLock_map">
+<area href="class_d_x_1_1_lock.html" alt="DX::Lock" shape="rect" coords="0,0,88,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a70382a476699db23556e86fbf7c0040f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_lock.html#a70382a476699db23556e86fbf7c0040f">SpinLock</a> (<a class="el" href="class_d_x_1_1_spin_mutex.html">SpinMutex</a> &amp;mutex)</td></tr>
-<tr class="separator:a70382a476699db23556e86fbf7c0040f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a338ff0b08d3517e734fbf190bfff7e24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_lock.html#a338ff0b08d3517e734fbf190bfff7e24">SpinLock</a> (const <a class="el" href="class_d_x_1_1_spin_mutex.html">SpinMutex</a> &amp;mutex)</td></tr>
+<tr class="separator:a338ff0b08d3517e734fbf190bfff7e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_lock.html" title="SpinLock is a lock-guard style class that latches onto a mutex, locking it upon creation and unlockin...">SpinLock</a> is a lock-guard style class that latches onto a mutex, locking it upon creation and unlocking it upon destruction. </p>
@@ -114,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> getMyClass()<span class="keyword"> const</span></div>
 <div class="line"><span class="keyword"></span>{</div>
-<div class="line">    <a class="code" href="class_d_x_1_1_spin_lock.html#a70382a476699db23556e86fbf7c0040f">SpinLock</a> _lock(myMutex);</div>
+<div class="line">    <a class="code" href="class_d_x_1_1_spin_lock.html#a338ff0b08d3517e734fbf190bfff7e24">SpinLock</a> _lock(myMutex);</div>
 <div class="line">    <span class="keywordflow">return</span> myClass; <span class="comment">// After the return, _lock destroys itself, automatically unlocking myMutex</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><div class="fragment"><div class="line">MyClass myClass;</div>
@@ -124,20 +134,20 @@ Public Member Functions</h2></td></tr>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// The below scope is thread-safe, the rest of the function isn&#39;t</span></div>
 <div class="line">    {</div>
-<div class="line">        <a class="code" href="class_d_x_1_1_spin_lock.html#a70382a476699db23556e86fbf7c0040f">SpinLock</a> _lock(myMutex);</div>
+<div class="line">        <a class="code" href="class_d_x_1_1_spin_lock.html#a338ff0b08d3517e734fbf190bfff7e24">SpinLock</a> _lock(myMutex);</div>
 <div class="line">        myClass = other;</div>
 <div class="line">    }</div>
 <div class="line">    <span class="comment">// Continue doing things here - the mutex is unlocked!</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a70382a476699db23556e86fbf7c0040f"></a>
+<a class="anchor" id="a338ff0b08d3517e734fbf190bfff7e24"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">DX::SpinLock::SpinLock </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_d_x_1_1_spin_mutex.html">SpinMutex</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_d_x_1_1_spin_mutex.html">SpinMutex</a> &amp;&#160;</td>
           <td class="paramname"><em>mutex</em></td><td>)</td>
           <td></td>
         </tr>
@@ -158,7 +168,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 1 2014 19:27:24 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

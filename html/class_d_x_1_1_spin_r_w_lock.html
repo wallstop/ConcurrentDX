@@ -63,6 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -101,8 +102,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a69454faf90759dcb64cca55d827f838d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_lock.html#a69454faf90759dcb64cca55d827f838d">SpinRWLock</a> (<a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> &amp;mutex, bool isWriter)</td></tr>
-<tr class="separator:a69454faf90759dcb64cca55d827f838d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a031480610e0da0bd664ada662057b99c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_x_1_1_spin_r_w_lock.html#a031480610e0da0bd664ada662057b99c">SpinRWLock</a> (const <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> &amp;mutex, bool isWriter)</td></tr>
+<tr class="separator:a031480610e0da0bd664ada662057b99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is the preferred way of interacting with a <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a>. <a class="el" href="class_d_x_1_1_spin_r_w_lock.html" title="SpinRWLock is the preferred way of interacting with a SpinRWMutex. SpinRWLock is a lock-guard style c...">SpinRWLock</a> is a lock-guard style class, locking the <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> upon construction and releasing the lock upon destruction. <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html" title="SpinRWMutex is a leightweight mutex that supports multiple readers (const-only access) and a single w...">SpinRWMutex</a> remembers whether it is a reader or writer lock, and releases the same kind of lock that it was constructed with. </p>
@@ -113,24 +114,24 @@ Public Member Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">MyClass getMyClass()<span class="keyword"> const</span></div>
 <div class="line"><span class="keyword"></span>{</div>
-<div class="line">    <a class="code" href="class_d_x_1_1_spin_r_w_lock.html#a69454faf90759dcb64cca55d827f838d">SpinRWLock</a> _lock(myRWMutex, <span class="keyword">false</span>);</div>
+<div class="line">    <a class="code" href="class_d_x_1_1_spin_r_w_lock.html#a031480610e0da0bd664ada662057b99c">SpinRWLock</a> _lock(myRWMutex, <span class="keyword">false</span>);</div>
 <div class="line">    <span class="keywordflow">return</span> myClass; <span class="comment">// No copies or thread-local storage necessary</span></div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> setMyClass(<span class="keyword">const</span> MyClass&amp; other)</div>
 <div class="line">{</div>
-<div class="line">    <a class="code" href="class_d_x_1_1_spin_r_w_lock.html#a69454faf90759dcb64cca55d827f838d">SpinRWLock</a> _lock(myRWMutex, <span class="keyword">true</span>);</div>
+<div class="line">    <a class="code" href="class_d_x_1_1_spin_r_w_lock.html#a031480610e0da0bd664ada662057b99c">SpinRWLock</a> _lock(myRWMutex, <span class="keyword">true</span>);</div>
 <div class="line">    myClass = other;</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a69454faf90759dcb64cca55d827f838d"></a>
+<a class="anchor" id="a031480610e0da0bd664ada662057b99c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">DX::SpinRWLock::SpinRWLock </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_d_x_1_1_spin_r_w_mutex.html">SpinRWMutex</a> &amp;&#160;</td>
           <td class="paramname"><em>mutex</em>, </td>
         </tr>
         <tr>
@@ -162,7 +163,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 27 2014 18:29:18 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 1 2014 19:27:24 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

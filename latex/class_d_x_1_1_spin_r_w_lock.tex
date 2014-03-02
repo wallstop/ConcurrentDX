@@ -13,7 +13,7 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_d_x_1_1_spin_r_w_lock_a69454faf90759dcb64cca55d827f838d}{Spin\-R\-W\-Lock} (\hyperlink{class_d_x_1_1_spin_r_w_mutex}{Spin\-R\-W\-Mutex} \&mutex, bool is\-Writer)
+\hyperlink{class_d_x_1_1_spin_r_w_lock_a031480610e0da0bd664ada662057b99c}{Spin\-R\-W\-Lock} (const \hyperlink{class_d_x_1_1_spin_r_w_mutex}{Spin\-R\-W\-Mutex} \&mutex, bool is\-Writer)
 \end{DoxyCompactItemize}
 
 
@@ -32,27 +32,27 @@ MyClass myClass;
 
 MyClass getMyClass()\textcolor{keyword}{ const}
 \textcolor{keyword}{}\{
-    \hyperlink{class_d_x_1_1_spin_r_w_lock_a69454faf90759dcb64cca55d827f838d}{SpinRWLock} \_lock(myRWMutex, \textcolor{keyword}{false});
+    \hyperlink{class_d_x_1_1_spin_r_w_lock_a031480610e0da0bd664ada662057b99c}{SpinRWLock} \_lock(myRWMutex, \textcolor{keyword}{false});
     \textcolor{keywordflow}{return} myClass; \textcolor{comment}{// No copies or thread-local storage necessary}
 \}
 
 \textcolor{keywordtype}{void} setMyClass(\textcolor{keyword}{const} MyClass& other)
 \{
-    \hyperlink{class_d_x_1_1_spin_r_w_lock_a69454faf90759dcb64cca55d827f838d}{SpinRWLock} \_lock(myRWMutex, \textcolor{keyword}{true});
+    \hyperlink{class_d_x_1_1_spin_r_w_lock_a031480610e0da0bd664ada662057b99c}{SpinRWLock} \_lock(myRWMutex, \textcolor{keyword}{true});
     myClass = other;
 \}
 \end{DoxyCode}
  
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{class_d_x_1_1_spin_r_w_lock_a69454faf90759dcb64cca55d827f838d}{\index{D\-X\-::\-Spin\-R\-W\-Lock@{D\-X\-::\-Spin\-R\-W\-Lock}!Spin\-R\-W\-Lock@{Spin\-R\-W\-Lock}}
+\hypertarget{class_d_x_1_1_spin_r_w_lock_a031480610e0da0bd664ada662057b99c}{\index{D\-X\-::\-Spin\-R\-W\-Lock@{D\-X\-::\-Spin\-R\-W\-Lock}!Spin\-R\-W\-Lock@{Spin\-R\-W\-Lock}}
 \index{Spin\-R\-W\-Lock@{Spin\-R\-W\-Lock}!DX::SpinRWLock@{D\-X\-::\-Spin\-R\-W\-Lock}}
 \subsubsection[{Spin\-R\-W\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}D\-X\-::\-Spin\-R\-W\-Lock\-::\-Spin\-R\-W\-Lock (
 \begin{DoxyParamCaption}
-\item[{{\bf Spin\-R\-W\-Mutex} \&}]{mutex, }
+\item[{const {\bf Spin\-R\-W\-Mutex} \&}]{mutex, }
 \item[{bool}]{is\-Writer}
 \end{DoxyParamCaption}
-)}}\label{class_d_x_1_1_spin_r_w_lock_a69454faf90759dcb64cca55d827f838d}
+)}}\label{class_d_x_1_1_spin_r_w_lock_a031480610e0da0bd664ada662057b99c}
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em mutex} & The \hyperlink{class_d_x_1_1_spin_r_w_mutex}{Spin\-R\-W\-Mutex} that the lock should be locking/unlocking \\
