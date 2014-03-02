@@ -10,9 +10,84 @@
 #include "../CacheLine.h"
 
 #include <atomic>
+#include <thread>
+
+#ifndef DEFAULT_YIELD_TICKS
+// Arbitrary for now, best results TBD
+#define DEFAULT_YIELD_TICKS 50
+#endif
 
 namespace DX
 {
+
+    // Currently available classes:
+    class Mutex;    // Abstract base
+    class Lock;     // Abstract base
+    class Barrier;  // Abstract base
+    class SpinMutex;
+    class SpinRecursiveMutex;
+    class SpinYieldMutex;
+    class SpinLock;
+    class SpinRWMutex;
+    class SpinRWLock;
+    class SpinBarrier;
+    class SpinCyclicBarrier;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    class Mutex
+    {
+    public:
+        Mutex();
+        virtual ~Mutex() = 0;
+
+        virtual void lock() const = 0;
+        virtual void unlock() const = 0;
+    private:
+        Mutex(const Mutex&);
+        Mutex(Mutex&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    Mutex::Mutex()
+    {
+    }
+
+    Mutex::~Mutex()
+    {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    class Lock
+    {
+    public:
+        Lock();
+        virtual ~Lock() = 0;
+    private:
+        Lock(const Lock&);
+        Lock(Lock&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    Lock::Lock()
+    {
+    }
+
+    Lock::~Lock()
+    {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /*! \brief SpinMutex is a leightweight mutex class that makes use of C++11 atomics to spin out in
         active-CPU-land as opposed to the traditional method of yielding context. It's target 
@@ -47,18 +122,18 @@ namespace DX
             Please note that the above example could also be accomplished by making the type of
             myProtectedValue std::atomic<int>, but the usage still stands.
     */
-    class SpinMutex
+    class SpinMutex : public Mutex
     {
     public:
         SpinMutex();
-        ~SpinMutex();
+        virtual ~SpinMutex();
 
         /*! \brief Locks the mutex. Further calls to lock will block until there is a call to unlock().
             
             \note lock() is not recursive.
             \note lock() is blocking.
         */
-        void lock();
+        virtual void lock() const;
 
         /*! \brief Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of 
             the state of the mutex when tryLock() is called, execution will continue.
@@ -66,19 +141,20 @@ namespace DX
             \note tryLock() is not recursive.
             \note tryLock() is non-blocking.
         */
-        bool tryLock();
+        virtual bool tryLock() const;
         /*! \brief Unlocks the mutex. This call is non-blocking, because having it otherwise doesn't
             make any sense.
         */
-        void unlock(); 
+        virtual void unlock() const; 
 
-    private:
+    protected:
         // Initial padding so we aren't overlapping some other potentially contended cache
         volatile char pad_[CACHE_LINE_SIZE];
-        std::atomic<bool> m_lock;
+        mutable std::atomic<bool> m_lock;
         // And then flesh out the rest of our pad
         volatile char pad_0[CACHE_LINE_SIZE - (sizeof(std::atomic<bool>) % CACHE_LINE_SIZE)];
 
+    private:
         SpinMutex(const SpinMutex&);
         SpinMutex(SpinMutex&&);
     };
@@ -95,7 +171,7 @@ namespace DX
     {
     }
 
-    void SpinMutex::lock()
+    void SpinMutex::lock() const
     {
         while(m_lock.exchange(true)) 
         {
@@ -103,12 +179,12 @@ namespace DX
         }
     }
 
-    bool SpinMutex::tryLock()
+    bool SpinMutex::tryLock() const
     {
-        return m_lock.exchange(true);
+        return !m_lock.exchange(true);
     }
 
-    void SpinMutex::unlock()
+    void SpinMutex::unlock() const
     {
         m_lock = false;
     }
@@ -151,15 +227,15 @@ namespace DX
         }
         \endcode
     */
-    class SpinLock
+    class SpinLock : Lock
     {
     public:
         /*! \param[in] mutex The SpinMutex the lock will lock and guard
         */
-        SpinLock(SpinMutex& mutex);
+        SpinLock(const SpinMutex& mutex);
         ~SpinLock();
     private:
-        SpinMutex* m_mutex;
+        const SpinMutex* m_mutex;
 
         SpinLock(const SpinLock&);
         SpinLock(SpinLock&&);
@@ -169,14 +245,16 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // impl
 
-    SpinLock::SpinLock(SpinMutex& _mutex) : m_mutex(&_mutex)
+    SpinLock::SpinLock(const SpinMutex& _mutex) : m_mutex(&_mutex)
     {
+        assert(m_mutex); // We should have a handle on a valid mutex
         if(m_mutex)
             m_mutex->lock();
     }
 
     SpinLock::~SpinLock()
     {
+        assert(m_mutex); // We should have a handle on a valid mutex
         if(m_mutex)
             m_mutex->unlock();
     }
@@ -233,17 +311,17 @@ namespace DX
             \note lock() is not recursive.
             \note lock() is blocking.
         */
-        void lock(bool isWriter);    
+        void lock(bool isWriter) const;    
 
         /*! \brief Unlocks the mutex as a writer or a reader
         */
-        void unlock(bool isWriter);
+        void unlock(bool isWriter) const;
     
     private:
         // Initial padding so we aren't overlapping some other potentially contended cache
         volatile char pad_[CACHE_LINE_SIZE];
         // Keeps track of the number of readers
-        std::atomic<size_t> m_readerLock;
+        mutable std::atomic<size_t> m_readerLock;
         // SpinMutex is already padded
         SpinMutex m_lockMutex;
         SpinMutex m_writerMutex;
@@ -264,9 +342,7 @@ namespace DX
     {
     }
 
-    // TODO: CHECK
-
-    void SpinRWMutex::lock(bool isWriter)
+    void SpinRWMutex::lock(bool isWriter) const
     {
         SpinLock _lock(m_lockMutex);
 
@@ -287,10 +363,11 @@ namespace DX
         }
     }
 
-    void SpinRWMutex::unlock(bool isWriter)
+    void SpinRWMutex::unlock(bool isWriter) const
     {
         if(!isWriter)
         {
+            assert(m_readerLock > 0); // unlock called too many times
             if(m_readerLock > 0)
                 --m_readerLock;
         }
@@ -337,11 +414,11 @@ namespace DX
         /*! \param[in] mutex The SpinRWMutex that the lock should be locking/unlocking
             \param[in] isWriter True indicates a writer lock, False indicates a reader lock
         */
-        SpinRWLock(SpinRWMutex& mutex, bool isWriter); 
+        SpinRWLock(const SpinRWMutex& mutex, bool isWriter); 
         ~SpinRWLock();
     private:
         bool isWriter;
-        SpinRWMutex* m_lock;
+        const SpinRWMutex* m_lock;
 
         SpinRWLock(const SpinRWLock&);
         SpinRWLock(SpinRWLock&&);
@@ -351,15 +428,17 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // impl
 
-    SpinRWLock::SpinRWLock(SpinRWMutex& _mutex, bool _writer) 
+    SpinRWLock::SpinRWLock(const SpinRWMutex& _mutex, bool _writer) 
         : m_lock(&_mutex), isWriter(_writer)
     {
+        assert(m_lock); // We should have a handle on a valid mutex
         if(m_lock)
             m_lock->lock(isWriter);
     }
 
     SpinRWLock::~SpinRWLock()
     {
+        assert(m_lock); // We should have a handle on a valid mutex
         if(m_lock)
             m_lock->unlock(isWriter);
     }
@@ -367,20 +446,148 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //class SpinRecursiveMutex
-    //{
-    //public:
-    //    SpinRecursiveMutex();
-    //    ~SpinRecursiveMutex();
+    class SpinRecursiveMutex : public SpinMutex
+    {
+    public:
+        SpinRecursiveMutex();
+        ~SpinRecursiveMutex();
 
-    //private:
+        void lock() const;
 
+        bool tryLock() const;
 
+        void unlock() const;
 
-    //};
+    private:
+        mutable SpinMutex m_assignmentMutex;
+        mutable std::atomic<size_t> m_count;
+        mutable std::atomic<size_t> m_owner;
+        volatile char pad_2[CACHE_LINE_SIZE - ((sizeof(std::atomic<size_t>) + sizeof(std::atomic<size_t>) + sizeof(std::atomic<bool>)) % CACHE_LINE_SIZE)];
+
+        SpinRecursiveMutex(const SpinRecursiveMutex&);
+        SpinRecursiveMutex(SpinRecursiveMutex&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////   
+    // impl
+
+    SpinRecursiveMutex::SpinRecursiveMutex() : SpinMutex(), m_owner(0), m_count(0)
+    {
+    }
+
+    SpinRecursiveMutex::~SpinRecursiveMutex()
+    {
+    }
+
+    void SpinRecursiveMutex::lock() const
+    {
+        const size_t queryingThread = std::this_thread::get_id().hash();
+        #if defined _DEBUG || defined DEBUG 
+            const bool wasLocked = m_lock.load();
+            assert(wasLocked ? queryingThread == m_owner : m_count == 0);
+        #endif
+        while(m_lock.exchange(true) && queryingThread != m_owner)
+        {
+            // Spin out
+        }
+
+        // Here we have exclusive ownership
+        SpinLock _lock(m_assignmentMutex);
+        m_owner = queryingThread;
+        ++m_count;
+    }
+
+    bool SpinRecursiveMutex::tryLock() const
+    {
+        const size_t queryingThread = std::this_thread::get_id().hash();
+
+        const bool wasLocked = m_lock.exchange(true);
+        const size_t owner = m_owner;
+        if(!wasLocked || (wasLocked && queryingThread == owner))
+        {
+            SpinLock _lock(m_assignmentMutex);
+            assert(wasLocked ? queryingThread == m_owner : m_count == 0);
+            m_owner = queryingThread;
+            ++m_count;
+            return true;
+        }
+        return false;        
+    }
+
+    void SpinRecursiveMutex::unlock() const
+    {
+        #if defined(_DEBUG) || defined(DEBUG)
+            const size_t queryingThread = std::this_thread::get_id().hash();
+            assert(m_owner == queryingThread);
+        #endif
+
+        assert(m_count > 0); // Make sure unlock() isn't called more than lock()
+        if(--m_count == 0)
+        {
+            m_lock = false;
+            m_owner = 0;
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    class SpinYieldMutex : public SpinMutex
+    {
+    public:
+        SpinYieldMutex(const size_t maxYieldTicks = DEFAULT_YIELD_TICKS);
+        ~SpinYieldMutex();
+
+        void lock() const;
+        bool tryLock() const;
+        void unlock() const;
+    private:
+        const   size_t m_maxYieldTicks;
+
+        SpinYieldMutex(const SpinYieldMutex&);
+        SpinYieldMutex(SpinYieldMutex&&);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    SpinYieldMutex::SpinYieldMutex(const size_t maxYieldTicks) : SpinMutex(), m_maxYieldTicks(maxYieldTicks)
+    {
+    }
+
+    SpinYieldMutex::~SpinYieldMutex()
+    {
+    }
+
+    void SpinYieldMutex::lock() const
+    {
+        size_t numTries = 0;
+        while(m_lock.exchange(true))
+        {
+            if(++numTries >= m_maxYieldTicks)   // >= just for sanity
+            {
+                numTries = 0;
+                std::this_thread::yield();
+            }
+        }
+    }
+
+    bool SpinYieldMutex::tryLock() const
+    {
+        return !m_lock.exchange(true);
+    }
+
+    void SpinYieldMutex::unlock() const
+    {
+        m_lock = false;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // TODO: make these yielding
 
     class Barrier
     {
@@ -388,11 +595,11 @@ namespace DX
         explicit Barrier(size_t numThreads);
         virtual ~Barrier();
 
-        virtual void wait() = 0;
+        virtual void wait() const = 0;
 
     protected:
         volatile char pad_[CACHE_LINE_SIZE];
-        std::atomic<size_t> m_count;
+        mutable std::atomic<size_t> m_count;
         volatile char pad_0[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
 
     private:
@@ -421,7 +628,7 @@ namespace DX
         SpinBarrier(size_t numThreads = 1);
         ~SpinBarrier();
 
-        void wait();
+        void wait() const;
 
     private:
         SpinBarrier(const SpinBarrier&);
@@ -440,8 +647,9 @@ namespace DX
     {
     }
 
-    void SpinBarrier::wait()
+    void SpinBarrier::wait() const
     {
+        assert(m_count > 0); // wait called too many times
         if(m_count > 0)
             --m_count;
         while(m_count > 0)
@@ -459,7 +667,7 @@ namespace DX
         CyclicSpinBarrier(size_t numThreads = 1);
         ~CyclicSpinBarrier();
 
-        void wait();
+        void wait() const;
     private:
         const size_t m_initial;
         SpinRWMutex m_reset;
@@ -481,15 +689,19 @@ namespace DX
     {
     }
 
-    void CyclicSpinBarrier::wait()
+    void CyclicSpinBarrier::wait() const
     {
         // Calls to wait while the counter is still resetting will block here
         m_reset.lock(false);
+        assert(m_count > 0); // wait called too many times
         const size_t count = m_count > 0 ? --m_count : 0;
         {
             if(count == 0)
             {
-                // Relinquish our hold on the reentrant lock, grab one as a writer
+                /*
+                    Relinquish our hold on the reentrant lock, grab one as a writer.
+                    This will block until every other thread waiting has finished their wait
+                */
                 m_reset.unlock(false);
                 m_reset.lock(true);
             }

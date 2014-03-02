@@ -14,11 +14,11 @@
 namespace DX
 {
 
-    class Lock
+    class StdLock
     {
     public:
-        Lock(std::mutex& _mutex);
-        ~Lock();
+        StdLock(std::mutex& _mutex);
+        ~StdLock();
     private:
         std::mutex* m_mutex;
     };
@@ -27,14 +27,16 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // impl
 
-    Lock::Lock(std::mutex& _mutex) : m_mutex(&_mutex)
+    StdLock::StdLock(std::mutex& _mutex) : m_mutex(&_mutex)
     {
-        m_mutex->lock();
+        if(m_mutex)
+            m_mutex->lock();
     }
 
-    Lock::~Lock()
+    StdLock::~StdLock()
     {
-        m_mutex->unlock();
+        if(m_mutex)
+            m_mutex->unlock();
     }
 
 }

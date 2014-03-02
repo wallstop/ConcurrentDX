@@ -7,7 +7,10 @@
 #pragma once
 
 #include "../CacheLine.h"
+#include "AbstractQueue.h"
 #include "../Mutex/SpinLocks.h"
+
+#include <new>
 
 namespace DX
 {
@@ -16,7 +19,7 @@ namespace DX
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     template <typename T>
-    class ConcurrentQueue
+    class ConcurrentQueue : public Queue<T>
     {
     public:
         ConcurrentQueue();
@@ -24,39 +27,17 @@ namespace DX
         ConcurrentQueue(const ConcurrentQueue& copy);
         // This is fast
         ConcurrentQueue(ConcurrentQueue&& move);
-        ~ConcurrentQueue();
-
-        // This blocks until the operator is able to return a T
-        friend bool operator>>(ConcurrentQueue&, T&);        
-        friend ConcurrentQueue& operator<<(ConcurrentQueue&, const T&);
-       
+        ~ConcurrentQueue();       
 
         bool isEmpty() const;
         size_t size() const;
-        bool pop(T& in);
-        void push(const T&);
+        bool pop(T& out);
+        void push(const T& in);
 
     private:
-
-        struct Node
-        {
-            Node() : next(nullptr), data(nullptr){};
-            Node(T* _data) :data(_data), next(nullptr){};
-
-            T* data;
-            std::atomic<Node*> next;
-            volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
-        };
-
-        Node* m_start;
-        volatile char pad_0[CACHE_LINE_SIZE - (sizeof(Node*) % CACHE_LINE_SIZE)];
-        Node* m_end;
-        volatile char pad_1[CACHE_LINE_SIZE - (sizeof(Node*) % CACHE_LINE_SIZE)];
         // SpinLocks are already padded on their own cache lines, so we don't need anymore padding
-        SpinMutex pushMutex;
-        SpinMutex popMutex;
-        std::atomic<size_t> m_size;
-        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
+        SpinYieldMutex pushMutex;
+        SpinYieldMutex popMutex;
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,46 +45,49 @@ namespace DX
     // impl
 
     template <typename T>
-    ConcurrentQueue<T>::ConcurrentQueue() : m_start(nullptr), m_end(nullptr), m_size(0)
+    ConcurrentQueue<T>::ConcurrentQueue() : Queue<T>()
     {
-        m_start = new Node();
+        m_start = new Node<T>();
         m_end = m_start;
         assert(m_start != nullptr);
     }
 
     template <typename T>
-    ConcurrentQueue<T>::ConcurrentQueue(const ConcurrentQueue& copy)
-        : m_start(nullptr), m_end(nullptr), m_size(0)
+    ConcurrentQueue<T>::ConcurrentQueue(const ConcurrentQueue& copy) : Queue<T>()
     {
-        m_start = new Node();
+        m_start = new Node<T>();
         assert(m_start != nullptr);
 
         SpinLock popLock(copy.popMutex);
-        if(copy.m_start == nullptr)
-            return;
+        assert(copy.m_start != nullptr);
 
-        Node* currentNode = copy.m_start;
-        while(currentNode->next != nullptr)
+        Node<T>* currentNode = copy.m_start->next;
+        while(currentNode != nullptr)
         {
+            assert(currentNode->data != nullptr);
+            push(*(currentNode->data));      
             currentNode = currentNode->next;
-            push(*(currentNode->data));
-            ++m_size;
         }
-
-        m_end = currentNode;
     }
 
     template <typename T>
-    ConcurrentQueue<T>::ConcurrentQueue(ConcurrentQueue&& move)
-        : m_start(nullptr), m_end(nullptr), m_size(0)
+    ConcurrentQueue<T>::ConcurrentQueue(ConcurrentQueue&& move) : Queue()
     {
         SpinLock popLock(move.popMutex);
         SpinLock pushLock(move.pushMutex);
 
-        m_start = move.m_start;
-        move.m_start = nullptr;
-        m_end = move.m_end;
-        move.m_end = nullptr;
+        m_start = new Node<T>();
+        m_start->next = move.m_start->next;
+        move.m_start->next = nullptr;
+        if(move.m_end == move.m_start)
+        {
+            m_end = m_start;
+        }
+        else
+        {
+            move.m_end = move.m_start;
+            m_end = move.m_end;
+        }
         m_size = move.m_size;
         move.m_size = 0;
 
@@ -120,7 +104,7 @@ namespace DX
 
         while(m_start != nullptr)
         {
-            Node* currentNode = m_start;
+            Node<T>* currentNode = m_start;
             m_start = currentNode->next.load();
             if(currentNode->data != nullptr)
             {
@@ -145,14 +129,13 @@ namespace DX
     }
 
     template <typename T>
-    bool ConcurrentQueue<T>::pop(T& in)
+    bool ConcurrentQueue<T>::pop(T& out)
     {
         assert(m_start != nullptr);
-        if(m_start == nullptr)
-            return false;
+        // m_start should never be a nullptr on a valid queue
 
-        Node* newStart = nullptr;
-        Node* oldStart = nullptr;
+        Node<T>* newStart = nullptr;
+        Node<T>* oldStart = nullptr;
 
         {
             SpinLock popLock(popMutex);
@@ -165,59 +148,38 @@ namespace DX
             m_start = newStart;
 
             assert(m_start->data != nullptr);
-            in = std::move(*(m_start->data));
+            out = std::move(*(m_start->data));
             assert(m_size > 0);
             --m_size;
         }
 
         delete oldStart->data;
-        oldStart->data = nullptr;
+        // Only null out what used to be there in DEBUG mode
+        #if defined _DEBUG || defined DEBUG
+            oldStart->data = nullptr;
+        #endif
         delete oldStart;
-        oldStart = nullptr;
+        #if defined _DEBUG || defined DEBUG
+            oldStart = nullptr;
+        #endif
 
         return true;
     }
 
     template <typename T>
-    void ConcurrentQueue<T>::push(const T& object)
+    void ConcurrentQueue<T>::push(const T&  in)
     {
         assert(m_end != nullptr);
-        if(m_end == nullptr)
-            return;
+        // m_end should never be a nullptr on a valid queue
 
-        Node* temp = new (std::nothrow) Node(new T(object));
+        Node<T>* temp = new (std::nothrow) Node<T>(new (std::nothrow) T(in));
         assert(temp != nullptr);
         assert(temp->data != nullptr);
-        if(temp == nullptr)
-            return;
         {
 	        SpinLock pushLock(pushMutex);
             m_end->next = temp;
             m_end = temp;
             ++m_size;
         }
-
-        assert(m_end != nullptr);
     }
-
-    template<typename T>
-    ConcurrentQueue<T>& operator<<(ConcurrentQueue<T>& queue, const T& object)
-    {
-        queue.push(object);
-        return queue;
-    }
-
-    template <typename T>
-    bool operator>>(ConcurrentQueue<T>& queue, T& object)
-    {
-        bool inserted = false;
-        do
-        {
-            inserted = queue.pop(object);
-        }
-        while(!inserted);
-
-        return inserted;
-    }
-
 }

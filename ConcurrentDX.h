@@ -9,5 +9,6 @@
 #include "CacheLine.h"
 #include "Mutex/SpinLocks.h"
 #include "Mutex/StdLocks.h"
+#include "Containers/Queue.h"
 #include "Containers/ConcurrentQueue.h"
 #include "Containers/ConcurrentStream.h"
