@@ -1,0 +1,22 @@
+
+#include "StdLocks.h"
+
+namespace DX
+{
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    StdLock::StdLock(std::mutex& _mutex) : m_mutex(&_mutex)
+    {
+        if(m_mutex)
+            m_mutex->lock();
+    }
+
+    StdLock::~StdLock()
+    {
+        if(m_mutex)
+            m_mutex->unlock();
+    }
+
+}
