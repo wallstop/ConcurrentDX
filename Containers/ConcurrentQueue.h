@@ -8,7 +8,7 @@
 
 #include "../CacheLine.h"
 #include "AbstractQueue.h"
-#include "../Mutex/SpinLocks.h"
+#include "../Mutex/SpinMutex.h"
 
 #include <new>
 

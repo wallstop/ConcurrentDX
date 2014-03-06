@@ -149,6 +149,11 @@ namespace DX
         assert(temp != nullptr);
         assert(temp->data != nullptr);
 
+         /*
+            Increment size before updating the Node's next ptr so we never have 
+            the case of the queue reporting a size smaller than it is - bigger
+            is ok.
+        */
         ++m_size;
         m_end->next = temp;
         m_end = temp;
