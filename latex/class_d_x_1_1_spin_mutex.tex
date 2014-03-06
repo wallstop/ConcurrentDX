@@ -8,7 +8,7 @@
 
 
 
-{\ttfamily \#include $<$Spin\-Locks.\-h$>$}
+{\ttfamily \#include $<$Spin\-Mutex.\-h$>$}
 
 Inheritance diagram for D\-X\-:\-:Spin\-Mutex\-:\begin{figure}[H]
 \begin{center}
@@ -19,23 +19,23 @@ Inheritance diagram for D\-X\-:\-:Spin\-Mutex\-:\begin{figure}[H]
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \hyperlink{class_d_x_1_1_spin_mutex_a133720662c9262696659d4dcd6d3adec}{lock} () const 
-\begin{DoxyCompactList}\small\item\em Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_a34fe253a0ee2c6030a808403cdd4b216}{unlock()}. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock} () const 
-\begin{DoxyCompactList}\small\item\em Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is called, execution will continue. \end{DoxyCompactList}\item 
-\hypertarget{class_d_x_1_1_spin_mutex_a34fe253a0ee2c6030a808403cdd4b216}{virtual void \hyperlink{class_d_x_1_1_spin_mutex_a34fe253a0ee2c6030a808403cdd4b216}{unlock} () const }\label{class_d_x_1_1_spin_mutex_a34fe253a0ee2c6030a808403cdd4b216}
+virtual void \hyperlink{class_d_x_1_1_spin_mutex_a2237431b7beabcff6936a375c3b41f00}{lock} () const 
+\begin{DoxyCompactList}\small\item\em Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_ae9778abf93d4d39edd566a77eba76c8a}{unlock()}. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock} () const 
+\begin{DoxyCompactList}\small\item\em Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is called, execution will continue. \end{DoxyCompactList}\item 
+\hypertarget{class_d_x_1_1_spin_mutex_ae9778abf93d4d39edd566a77eba76c8a}{virtual void \hyperlink{class_d_x_1_1_spin_mutex_ae9778abf93d4d39edd566a77eba76c8a}{unlock} () const }\label{class_d_x_1_1_spin_mutex_ae9778abf93d4d39edd566a77eba76c8a}
 
 \begin{DoxyCompactList}\small\item\em Unlocks the mutex. This call is non-\/blocking, because having it otherwise doesn't make any sense. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_d_x_1_1_spin_mutex_a6583b897a71d82aa083b8fa777b235d7}{volatile char {\bfseries pad\-\_\-} \mbox{[}C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E\mbox{]}}\label{class_d_x_1_1_spin_mutex_a6583b897a71d82aa083b8fa777b235d7}
+\hypertarget{class_d_x_1_1_spin_mutex_a1d3236ec5dfb1893bc2e50525ddbb378}{volatile char {\bfseries pad\-\_\-0} \mbox{[}C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E\mbox{]}}\label{class_d_x_1_1_spin_mutex_a1d3236ec5dfb1893bc2e50525ddbb378}
 
 \item 
 \hypertarget{class_d_x_1_1_spin_mutex_a3e212383a0fe9738c059fa79ccf6d06f}{std\-::atomic$<$ bool $>$ {\bfseries m\-\_\-lock}}\label{class_d_x_1_1_spin_mutex_a3e212383a0fe9738c059fa79ccf6d06f}
 
 \item 
-\hypertarget{class_d_x_1_1_spin_mutex_ab8a4a731d0d9c17a192ab8d93988af64}{volatile char {\bfseries pad\-\_\-0} \mbox{[}C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E-\/(sizeof(std\-::atomic$<$ bool $>$)\%C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E)\mbox{]}}\label{class_d_x_1_1_spin_mutex_ab8a4a731d0d9c17a192ab8d93988af64}
+\hypertarget{class_d_x_1_1_spin_mutex_ad84aba631e8e8dbb32988c961f7b576e}{volatile char {\bfseries pad\-\_\-1} \mbox{[}C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E-\/(sizeof(std\-::atomic$<$ bool $>$)\%C\-A\-C\-H\-E\-\_\-\-L\-I\-N\-E\-\_\-\-S\-I\-Z\-E)\mbox{]}}\label{class_d_x_1_1_spin_mutex_ad84aba631e8e8dbb32988c961f7b576e}
 
 \end{DoxyCompactItemize}
 
@@ -73,21 +73,21 @@ Sample of a \hyperlink{class_d_x_1_1_spin_mutex}{Spin\-Mutex} protecting an int\
 Please note that the above example could also be accomplished by making the type of my\-Protected\-Value std\-::atomic$<$int$>$, but the usage still stands. 
 
 \subsection{Member Function Documentation}
-\hypertarget{class_d_x_1_1_spin_mutex_a133720662c9262696659d4dcd6d3adec}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!lock@{lock}}
+\hypertarget{class_d_x_1_1_spin_mutex_a2237431b7beabcff6936a375c3b41f00}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!lock@{lock}}
 \index{lock@{lock}!DX::SpinMutex@{D\-X\-::\-Spin\-Mutex}}
-\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}void D\-X\-::\-Spin\-Mutex\-::lock (
+\subsubsection[{lock}]{\setlength{\rightskip}{0pt plus 5cm}virtual void D\-X\-::\-Spin\-Mutex\-::lock (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_x_1_1_spin_mutex_a133720662c9262696659d4dcd6d3adec}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_x_1_1_spin_mutex_a2237431b7beabcff6936a375c3b41f00}
 
 
-Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_a34fe253a0ee2c6030a808403cdd4b216}{unlock()}. 
+Locks the mutex. Further calls to lock will block until there is a call to \hyperlink{class_d_x_1_1_spin_mutex_ae9778abf93d4d39edd566a77eba76c8a}{unlock()}. 
 
 \begin{DoxyNote}{Note}
-\hyperlink{class_d_x_1_1_spin_mutex_a133720662c9262696659d4dcd6d3adec}{lock()} is not recursive. 
+\hyperlink{class_d_x_1_1_spin_mutex_a2237431b7beabcff6936a375c3b41f00}{lock()} is not recursive. 
 
-\hyperlink{class_d_x_1_1_spin_mutex_a133720662c9262696659d4dcd6d3adec}{lock()} is blocking. 
+\hyperlink{class_d_x_1_1_spin_mutex_a2237431b7beabcff6936a375c3b41f00}{lock()} is blocking. 
 \end{DoxyNote}
 
 
@@ -95,30 +95,30 @@ Implements \hyperlink{class_d_x_1_1_mutex}{D\-X\-::\-Mutex}.
 
 
 
-Reimplemented in \hyperlink{class_d_x_1_1_spin_yield_mutex_ad2229f4e9acd7c6bab9e2fbe029b1f1f}{D\-X\-::\-Spin\-Yield\-Mutex}, and \hyperlink{class_d_x_1_1_spin_recursive_mutex_a928053922f1a59db49d6027d108b88ba}{D\-X\-::\-Spin\-Recursive\-Mutex}.
+Reimplemented in \hyperlink{class_d_x_1_1_spin_recursive_mutex_a928053922f1a59db49d6027d108b88ba}{D\-X\-::\-Spin\-Recursive\-Mutex}, and \hyperlink{class_d_x_1_1_spin_yield_mutex_ad2229f4e9acd7c6bab9e2fbe029b1f1f}{D\-X\-::\-Spin\-Yield\-Mutex}.
 
-\hypertarget{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!try\-Lock@{try\-Lock}}
+\hypertarget{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{\index{D\-X\-::\-Spin\-Mutex@{D\-X\-::\-Spin\-Mutex}!try\-Lock@{try\-Lock}}
 \index{try\-Lock@{try\-Lock}!DX::SpinMutex@{D\-X\-::\-Spin\-Mutex}}
-\subsubsection[{try\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}bool D\-X\-::\-Spin\-Mutex\-::try\-Lock (
+\subsubsection[{try\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool D\-X\-::\-Spin\-Mutex\-::try\-Lock (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}
 
 
-Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is called, execution will continue. 
+Attempts to lock the mutex. \hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is non-\/blocking, meaning that regardless of the state of the mutex when \hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is called, execution will continue. 
 
 \begin{DoxyNote}{Note}
-\hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is not recursive. 
+\hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is not recursive. 
 
-\hyperlink{class_d_x_1_1_spin_mutex_a395c28ec936bce90ac562039168a540a}{try\-Lock()} is non-\/blocking. 
+\hyperlink{class_d_x_1_1_spin_mutex_af1a59657616a8c68ff5785e18e53a469}{try\-Lock()} is non-\/blocking. 
 \end{DoxyNote}
 
 
-Reimplemented in \hyperlink{class_d_x_1_1_spin_yield_mutex_acd1ed560cf8afd7363a520beff4b5455}{D\-X\-::\-Spin\-Yield\-Mutex}, and \hyperlink{class_d_x_1_1_spin_recursive_mutex_a9150334e2741a1de69f177491214cf15}{D\-X\-::\-Spin\-Recursive\-Mutex}.
+Reimplemented in \hyperlink{class_d_x_1_1_spin_recursive_mutex_a9150334e2741a1de69f177491214cf15}{D\-X\-::\-Spin\-Recursive\-Mutex}, and \hyperlink{class_d_x_1_1_spin_yield_mutex_acd1ed560cf8afd7363a520beff4b5455}{D\-X\-::\-Spin\-Yield\-Mutex}.
 
 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 
-Mutex/Spin\-Locks.\-h\end{DoxyCompactItemize}
+Mutex/Spin\-Mutex.\-h\end{DoxyCompactItemize}

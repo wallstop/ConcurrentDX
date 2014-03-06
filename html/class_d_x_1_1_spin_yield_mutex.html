@@ -124,15 +124,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_d_x_1_1_spin_mutex"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_d_x_1_1_spin_mutex')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_d_x_1_1_spin_mutex.html">DX::SpinMutex</a></td></tr>
-<tr class="memitem:a6583b897a71d82aa083b8fa777b235d7 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6583b897a71d82aa083b8fa777b235d7"></a>
-volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_</b> [CACHE_LINE_SIZE]</td></tr>
-<tr class="separator:a6583b897a71d82aa083b8fa777b235d7 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d3236ec5dfb1893bc2e50525ddbb378 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d3236ec5dfb1893bc2e50525ddbb378"></a>
+volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_0</b> [CACHE_LINE_SIZE]</td></tr>
+<tr class="separator:a1d3236ec5dfb1893bc2e50525ddbb378 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e212383a0fe9738c059fa79ccf6d06f inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e212383a0fe9738c059fa79ccf6d06f"></a>
 std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_lock</b></td></tr>
 <tr class="separator:a3e212383a0fe9738c059fa79ccf6d06f inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8a4a731d0d9c17a192ab8d93988af64 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8a4a731d0d9c17a192ab8d93988af64"></a>
-volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_0</b> [CACHE_LINE_SIZE-(sizeof(std::atomic&lt; bool &gt;)%CACHE_LINE_SIZE)]</td></tr>
-<tr class="separator:ab8a4a731d0d9c17a192ab8d93988af64 inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad84aba631e8e8dbb32988c961f7b576e inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad84aba631e8e8dbb32988c961f7b576e"></a>
+volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_1</b> [CACHE_LINE_SIZE-(sizeof(std::atomic&lt; bool &gt;)%CACHE_LINE_SIZE)]</td></tr>
+<tr class="separator:ad84aba631e8e8dbb32988c961f7b576e inherit pro_attribs_class_d_x_1_1_spin_mutex"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ad2229f4e9acd7c6bab9e2fbe029b1f1f"></a>
@@ -161,7 +161,7 @@ volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_0</b> [C
 <dd>
 <a class="el" href="class_d_x_1_1_spin_yield_mutex.html#ad2229f4e9acd7c6bab9e2fbe029b1f1f" title="Locks the mutex. Further calls to lock will block until there is a call to unlock(). ">lock()</a> is blocking. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_d_x_1_1_spin_mutex.html#a133720662c9262696659d4dcd6d3adec">DX::SpinMutex</a>.</p>
+<p>Reimplemented from <a class="el" href="class_d_x_1_1_spin_mutex.html#a2237431b7beabcff6936a375c3b41f00">DX::SpinMutex</a>.</p>
 
 </div>
 </div>
@@ -191,17 +191,18 @@ volatile char&#160;</td><td class="memItemRight" valign="bottom"><b>pad_0</b> [C
 <dd>
 <a class="el" href="class_d_x_1_1_spin_yield_mutex.html#acd1ed560cf8afd7363a520beff4b5455" title="Attempts to lock the mutex. tryLock() is non-blocking, meaning that regardless of the state of the mu...">tryLock()</a> is non-blocking. </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_d_x_1_1_spin_mutex.html#a395c28ec936bce90ac562039168a540a">DX::SpinMutex</a>.</p>
+<p>Reimplemented from <a class="el" href="class_d_x_1_1_spin_mutex.html#af1a59657616a8c68ff5785e18e53a469">DX::SpinMutex</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>Mutex/<a class="el" href="_spin_locks_8h_source.html">SpinLocks.h</a></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>Mutex/<a class="el" href="_spin_yield_mutex_8h_source.html">SpinYieldMutex.h</a></li>
+<li>Mutex/SpinYieldMutex.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 1 2014 19:27:24 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 6 2014 18:46:55 for ConcurrentDX by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

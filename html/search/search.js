@@ -8,7 +8,7 @@
 var indexSectionsWithContent =
 {
   0: "bclmnqstu",
-  1: "bclmnqs",
+  1: "bcmnqs",
   2: "lstu",
   3: "c"
 };
