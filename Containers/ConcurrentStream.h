@@ -29,15 +29,8 @@ namespace DX
         size_t size() const;
         bool pop(T& in);
         void push(const T&);
-
-    private:
-        Node<T>* m_start;
-        volatile char pad_0[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
-        Node<T>* m_end;
-        volatile char pad_1[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
-        std::atomic<size_t> m_size;
-        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
     };
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,9 +149,9 @@ namespace DX
         assert(temp != nullptr);
         assert(temp->data != nullptr);
 
+        ++m_size;
         m_end->next = temp;
         m_end = temp;
-        ++m_size;
     }
 
 }

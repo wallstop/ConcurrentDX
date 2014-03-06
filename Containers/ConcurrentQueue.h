@@ -177,9 +177,10 @@ namespace DX
         assert(temp->data != nullptr);
         {
 	        SpinLock pushLock(pushMutex);
+            ++m_size;
             m_end->next = temp;
             m_end = temp;
-            ++m_size;
         }
     }
+ 
 }

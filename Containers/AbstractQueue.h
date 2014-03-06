@@ -30,25 +30,6 @@ namespace DX
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // impl
-
-    template <typename T>
-    Node<T>::Node() : next(nullptr), data(nullptr)
-    {
-    }
-
-    template <typename T>
-    Node<T>::Node(T* _data) : data(_data), next(nullptr)
-    {
-    }
-
-    template <typename T>
-    Node<T>::~Node()
-    {
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     template <typename T>
     class Queue
@@ -57,8 +38,8 @@ namespace DX
         Queue();
         virtual ~Queue() = 0;
 
-        virtual bool isEmpty() const = 0;
-        virtual size_t size() const = 0;
+        virtual bool isEmpty() const;
+        virtual size_t size() const;
         virtual bool pop(T& in) = 0;
         virtual void push(const T& in) = 0;
 
@@ -82,6 +63,25 @@ namespace DX
     // impl
 
     template <typename T>
+    Node<T>::Node() : next(nullptr), data(nullptr)
+    {
+    }
+
+    template <typename T>
+    Node<T>::Node(T* _data) : data(_data), next(nullptr)
+    {
+    }
+
+    template <typename T>
+    Node<T>::~Node()
+    {
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // impl
+
+    template <typename T>
     Queue<T>::Queue() : m_start(nullptr), m_end(nullptr), m_size(0)
     {
     }
@@ -89,6 +89,18 @@ namespace DX
     template <typename T>
     Queue<T>::~Queue()
     {
+    }
+
+    template <typename T>
+    size_t Queue<T>::size() const
+    {
+        return m_size;
+    }
+
+    template <typename T>
+    bool Queue<T>::isEmpty() const
+    {
+        return m_size == 0;
     }
 
     template<typename T>

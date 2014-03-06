@@ -14,6 +14,8 @@
 namespace DX
 {
 
+    /*! \brief StdLock is a lock-guard for mutexes in the std library
+    */
     class StdLock
     {
     public:
@@ -22,21 +24,5 @@ namespace DX
     private:
         std::mutex* m_mutex;
     };
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // impl
-
-    StdLock::StdLock(std::mutex& _mutex) : m_mutex(&_mutex)
-    {
-        if(m_mutex)
-            m_mutex->lock();
-    }
-
-    StdLock::~StdLock()
-    {
-        if(m_mutex)
-            m_mutex->unlock();
-    }
 
 }

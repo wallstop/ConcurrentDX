@@ -128,14 +128,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <ClInclude Include="..\CacheLine.h" />
+    <ClInclude Include="..\ConcurrentDXLib.h" />
+    <ClInclude Include="..\Containers\ConcurrentQueue.h" />
+    <ClInclude Include="..\Containers\ConcurrentStream.h" />
+    <ClInclude Include="..\Containers\AbstractQueue.h" />
+    <ClInclude Include="..\Mutex\Barrier.h" />
+    <ClInclude Include="..\Mutex\CyclicSpinBarrier.h" />
+    <ClInclude Include="..\Mutex\Mutex.h" />
+    <ClInclude Include="..\Mutex\SpinBarrier.h" />
+    <ClInclude Include="..\Mutex\SpinMutex.h" />
+    <ClInclude Include="..\Mutex\SpinRecursiveMutex.h" />
+    <ClInclude Include="..\Mutex\SpinRWMutex.h" />
+    <ClInclude Include="..\Mutex\SpinYieldMutex.h" />
+    <ClInclude Include="..\Mutex\StdLocks.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CacheLine.h" />
-    <ClInclude Include="..\ConcurrentDX.h" />
-    <ClInclude Include="..\Containers\ConcurrentQueue.h" />
-    <ClInclude Include="..\Mutex\Locks.h" />
-    <ClInclude Include="..\Mutex\SpinLocks.h" />
+    <ClCompile Include="..\Mutex\Barrier.cpp" />
+    <ClCompile Include="..\Mutex\CyclicSpinBarrier.cpp" />
+    <ClCompile Include="..\Mutex\Mutex.cpp" />
+    <ClCompile Include="..\Mutex\SpinBarrier.cpp" />
+    <ClCompile Include="..\Mutex\SpinMutex.cpp" />
+    <ClCompile Include="..\Mutex\SpinRecursiveMutex.cpp" />
+    <ClCompile Include="..\Mutex\SpinRWMutex.cpp" />
+    <ClCompile Include="..\Mutex\SpinYieldMutex.cpp" />
+    <ClCompile Include="..\Mutex\StdLocks.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
