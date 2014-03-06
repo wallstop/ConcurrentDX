@@ -26,6 +26,10 @@ namespace DX
         T* data;
         std::atomic<Node*> next;
         volatile char pad_[CACHE_LINE_SIZE - ((sizeof(T*) + sizeof(std::atomic<Node*>)) % CACHE_LINE_SIZE)];
+
+    private:
+        Node(const Node&);
+        Node(Node&&);
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
