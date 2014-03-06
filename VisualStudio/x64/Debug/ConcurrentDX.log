@@ -1,5 +1,6 @@
-﻿Build started 3/5/2014 9:51:07 PM.
-     1>Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 3/6/2014 6:30:37 PM.
+     1>Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(346,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt ..\Mutex\Barrier.cpp ..\Mutex\CyclicSpinBarrier.cpp ..\Mutex\Mutex.cpp ..\Mutex\SpinBarrier.cpp ..\Mutex\SpinMutex.cpp ..\Mutex\SpinRecursiveMutex.cpp ..\Mutex\SpinRWMutex.cpp ..\Mutex\SpinYieldMutex.cpp ..\Mutex\StdLocks.cpp
          StdLocks.cpp
@@ -13,7 +14,7 @@
          Barrier.cpp
          Generating Code...
        Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\Lib.exe /OUT:"D:\Code\loopback-capture\loopback-capture\source\loopback-capture\x64\Debug\ConcurrentDX.lib" /NOLOGO /MACHINE:X64 x64\Debug\Barrier.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\Lib.exe /OUT:"D:\Code\loopback-capture\ConcurrentDX\VisualStudio\\..\lib64\ConcurrentDXD.lib" /NOLOGO /MACHINE:X64 x64\Debug\Barrier.obj
          x64\Debug\CyclicSpinBarrier.obj
          x64\Debug\Mutex.obj
          x64\Debug\SpinBarrier.obj
@@ -22,9 +23,9 @@
          x64\Debug\SpinRWMutex.obj
          x64\Debug\SpinYieldMutex.obj
          x64\Debug\StdLocks.obj
-         ConcurrentDX.vcxproj -> D:\Code\loopback-capture\loopback-capture\source\loopback-capture\x64\Debug\ConcurrentDX.lib
-     1>Done Building Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" (Rebuild target(s)).
+         ConcurrentDX.vcxproj -> D:\Code\loopback-capture\ConcurrentDX\VisualStudio\\..\lib64\ConcurrentDXD.lib
+     1>Done Building Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.09
+Time Elapsed 00:00:03.33

@@ -1,5 +1,30 @@
-﻿Build started 2/28/2014 1:29:03 AM.
+﻿Build started 3/6/2014 6:30:57 PM.
+     1>Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(346,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Mutex\Barrier.cpp ..\Mutex\CyclicSpinBarrier.cpp ..\Mutex\Mutex.cpp ..\Mutex\SpinBarrier.cpp ..\Mutex\SpinMutex.cpp ..\Mutex\SpinRecursiveMutex.cpp ..\Mutex\SpinRWMutex.cpp ..\Mutex\SpinYieldMutex.cpp ..\Mutex\StdLocks.cpp
+         Barrier.cpp
+         CyclicSpinBarrier.cpp
+         Mutex.cpp
+         SpinBarrier.cpp
+         SpinMutex.cpp
+         SpinRecursiveMutex.cpp
+         SpinRWMutex.cpp
+         SpinYieldMutex.cpp
+         StdLocks.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"D:\Code\loopback-capture\ConcurrentDX\VisualStudio\\..\lib32\ConcurrentDX.lib" /NOLOGO /LTCG Release\Barrier.obj
+         Release\CyclicSpinBarrier.obj
+         Release\Mutex.obj
+         Release\SpinBarrier.obj
+         Release\SpinMutex.obj
+         Release\SpinRecursiveMutex.obj
+         Release\SpinRWMutex.obj
+         Release\SpinYieldMutex.obj
+         Release\StdLocks.obj
+         ConcurrentDX.vcxproj -> D:\Code\loopback-capture\ConcurrentDX\VisualStudio\\..\lib32\ConcurrentDX.lib
+     1>Done Building Project "D:\Code\loopback-capture\ConcurrentDX\VisualStudio\ConcurrentDX.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.02
+Time Elapsed 00:00:02.78
