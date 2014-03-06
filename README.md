@@ -1,7 +1,7 @@
 ConcurrentDX
 ============
 
-Lightweight, (no-longer-header-only) C++ concurrency library
+Lightweight (no-longer-header-only) C++ concurrency library
 
 *Disclaimer: I have no idea what I'm doing.*
 
