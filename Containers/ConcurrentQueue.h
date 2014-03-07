@@ -8,7 +8,7 @@
 
 #include "../CacheLine.h"
 #include "AbstractQueue.h"
-#include "../Mutex/SpinMutex.h"
+#include "../Mutex/SpinYieldMutex.h"
 
 #include <new>
 
@@ -29,10 +29,11 @@ namespace DX
         ConcurrentQueue(ConcurrentQueue&& move);
         ~ConcurrentQueue();       
 
-        bool isEmpty() const;
-        size_t size() const;
-        bool pop(T& out);
-        void push(const T& in);
+        bool    isEmpty() const;
+        size_t  size() const;
+        bool    front(T& out) const;
+        bool    pop(T& out);
+        void    push(const T& in);
 
     private:
         // SpinLocks are already padded on their own cache lines, so we don't need anymore padding
@@ -126,6 +127,20 @@ namespace DX
     size_t ConcurrentQueue<T>::size() const
     {
         return m_size;
+    }
+
+    template <typename T>
+    bool ConcurrentQueue<T>::front(T& out) const
+    {
+        assert(m_start);
+        if(m_start->next.load() == nullptr)
+            return false;
+        SpinLock popLock(popMutex);
+        if(m_start->next.load()->data == nullptr)
+            return false;
+
+        out = *(m_start->next.load()->data);
+        return true;
     }
 
     template <typename T>

@@ -42,21 +42,22 @@ namespace DX
         Queue();
         virtual ~Queue() = 0;
 
-        virtual bool isEmpty() const;
-        virtual size_t size() const;
-        virtual bool pop(T& in) = 0;
-        virtual void push(const T& in) = 0;
+        virtual bool    isEmpty() const;
+        virtual size_t  size() const;
+        virtual bool    front(T& out) const = 0;
+        virtual bool    pop(T& in) = 0;
+        virtual void    push(const T& in) = 0;
 
-        bool operator>>(T&);
-        Queue& operator<<(const T&);
+        bool    operator>>(T&);
+        Queue&  operator<<(const T&);
 
     protected:
-        Node<T>* m_start;
-        volatile char pad_0[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
-        Node<T>* m_end;
-        volatile char pad_1[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
+        Node<T>*            m_start;
+        volatile char       pad_0[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
+        Node<T>*            m_end;
+        volatile char       pad_1[CACHE_LINE_SIZE - (sizeof(Node<T>*) % CACHE_LINE_SIZE)];
         std::atomic<size_t> m_size;
-        volatile char pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
+        volatile char       pad_2[CACHE_LINE_SIZE - (sizeof(std::atomic<size_t>) % CACHE_LINE_SIZE)];
     private:
         Queue(const Queue&);
         Queue(Queue&&);

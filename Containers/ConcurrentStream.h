@@ -25,10 +25,11 @@ namespace DX
         ConcurrentStream(ConcurrentStream&&);
         ~ConcurrentStream();
 
-        bool isEmpty() const;
-        size_t size() const;
-        bool pop(T& in);
-        void push(const T&);
+        bool    isEmpty() const;
+        size_t  size() const;
+        bool    front(T& out) const;
+        bool    pop(T& in);
+        void    push(const T&);
     };
 
 
@@ -108,6 +109,19 @@ namespace DX
     size_t ConcurrentStream<T>::size() const
     {
         return m_size;
+    }
+
+    template <typename T>
+    bool ConcurrentStream<T>::front(T& out) const
+    {
+        assert(m_start);
+        if(m_start->next.load() == nullptr)
+            return false;
+        if(m_start->next.load()->data == nullptr)
+            return false;
+
+        out = *(m_start->next.load()->data);
+        return true;
     }
 
     template <typename T>

@@ -149,6 +149,7 @@
     <ClInclude Include="..\Containers\ConcurrentStream.h" />
     <ClInclude Include="..\Containers\AbstractQueue.h" />
     <ClInclude Include="..\Mutex\Barrier.h" />
+    <ClInclude Include="..\Mutex\ConcurrentDXExport.h" />
     <ClInclude Include="..\Mutex\CyclicSpinBarrier.h" />
     <ClInclude Include="..\Mutex\Mutex.h" />
     <ClInclude Include="..\Mutex\SpinBarrier.h" />

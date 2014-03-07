@@ -47,6 +47,7 @@
       <Filter>Mutex</Filter>
     </ClInclude>
     <ClInclude Include="..\ConcurrentDXLib.h" />
+    <ClInclude Include="..\Mutex\ConcurrentDXExport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Mutex\StdLocks.cpp">
