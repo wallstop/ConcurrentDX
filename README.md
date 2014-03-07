@@ -13,7 +13,7 @@ ConcurrentDX is a header-only library. It relies on some C++ 11 features, howeve
   * To do the following with your project (where the include paths have been set up to point to whatever directory holds the repo):
 
 ```c++
-#include <ConcurrentDX/ConcurrentDX.h>
+#include <ConcurrentDX/ConcurrentDXLib.h>
 ```
   * ...and that's it! All of the classes and containers are in the DX{} namespace
 
