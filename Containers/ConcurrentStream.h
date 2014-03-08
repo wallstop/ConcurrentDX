@@ -28,8 +28,9 @@ namespace DX
         bool    isEmpty() const;
         size_t  size() const;
         bool    front(T& out) const;
-        bool    pop(T& in);
-        void    push(const T&);
+        bool    pop(T& out);
+        void    push(const T& in);
+        void    push(T&& moveIn);
     };
 
 
@@ -160,6 +161,25 @@ namespace DX
         assert(m_end != nullptr);
 
         Node<T>* temp = new (std::nothrow) Node<T>(new (std::nothrow) T(in));
+        assert(temp != nullptr);
+        assert(temp->data != nullptr);
+
+         /*
+            Increment size before updating the Node's next ptr so we never have 
+            the case of the queue reporting a size smaller than it is - bigger
+            is ok.
+        */
+        ++m_size;
+        m_end->next = temp;
+        m_end = temp;
+    }
+
+    template <typename T>
+    void ConcurrentStream<T>::push(T&& moveIn)
+    {
+        assert(m_end != nullptr);
+
+        Node<T>* temp = new (std::nothrow) Node<T>(new (std::nothrow) T(moveIn));
         assert(temp != nullptr);
         assert(temp->data != nullptr);
 

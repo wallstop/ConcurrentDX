@@ -34,6 +34,7 @@ namespace DX
         bool    front(T& out) const;
         bool    pop(T& out);
         void    push(const T& in);
+        void    push(T&& moveIn);
 
     private:
         // SpinLocks are already padded on their own cache lines, so we don't need anymore padding
@@ -182,12 +183,29 @@ namespace DX
     }
 
     template <typename T>
-    void ConcurrentQueue<T>::push(const T&  in)
+    void ConcurrentQueue<T>::push(const T& in)
     {
         assert(m_end != nullptr);
         // m_end should never be a nullptr on a valid queue
 
         Node<T>* temp = new (std::nothrow) Node<T>(new (std::nothrow) T(in));
+        assert(temp != nullptr);
+        assert(temp->data != nullptr);
+        {
+	        SpinLock pushLock(pushMutex);
+            ++m_size;
+            m_end->next = temp;
+            m_end = temp;
+        }
+    }
+
+    template <typename T>
+    void ConcurrentQueue<T>::push(T&& moveIn)
+    {
+        assert(m_end != nullptr);
+        // m_end should never be a nullptr on a valid queue
+
+        Node<T>* temp = new (std::nothrow) Node<T>(new (std::nothrow) T(moveIn));
         assert(temp != nullptr);
         assert(temp->data != nullptr);
         {

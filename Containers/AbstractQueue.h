@@ -47,6 +47,7 @@ namespace DX
         virtual bool    front(T& out) const = 0;
         virtual bool    pop(T& in) = 0;
         virtual void    push(const T& in) = 0;
+        virtual void    push(T&& in) = 0;
 
         bool    operator>>(T&);
         Queue&  operator<<(const T&);
