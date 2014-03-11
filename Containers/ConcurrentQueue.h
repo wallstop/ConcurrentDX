@@ -36,6 +36,8 @@ namespace DX
         void    push(const T& in);
         void    push(T&& moveIn);
 
+        void    clear();
+
     private:
         // SpinLocks are already padded on their own cache lines, so we don't need anymore padding
         SpinYieldMutex pushMutex;
@@ -100,11 +102,23 @@ namespace DX
     template <typename T>
     ConcurrentQueue<T>::~ConcurrentQueue()
     {
-        // Thread-safe destructor, just in case
+        clear();
+        SpinLock popLock(popMutex);
+        SpinLock pushLock(pushMutex);      
+
+        delete m_start->data;
+        m_start->data = nullptr;
+        delete m_start;
+        m_start = nullptr;
+    }
+
+    template <typename T>
+    void ConcurrentQueue<T>::clear()
+    {
         SpinLock popLock(popMutex);
         SpinLock pushLock(pushMutex);
 
-        while(m_start != nullptr)
+        while(m_start->next.load() != nullptr)
         {
             Node<T>* currentNode = m_start;
             m_start = currentNode->next.load();

@@ -49,6 +49,8 @@ namespace DX
         virtual void    push(const T& in) = 0;
         virtual void    push(T&& in) = 0;
 
+        virtual void    clear() = 0;
+
         bool    operator>>(T&);
         Queue&  operator<<(const T&);
 

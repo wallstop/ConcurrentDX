@@ -31,6 +31,8 @@ namespace DX
         bool    pop(T& out);
         void    push(const T& in);
         void    push(T&& moveIn);
+
+        void    clear();
     };
 
 
@@ -86,7 +88,18 @@ namespace DX
     template <typename T>
     ConcurrentStream<T>::~ConcurrentStream()
     {
-        while(m_start != nullptr)
+        clear();
+        
+        delete m_start->data;
+        m_start->data = nullptr;
+        delete m_start;
+        m_start = nullptr;
+    }
+
+    template <typename T>
+    void ConcurrentStream<T>::clear()
+    {
+        while(m_start->next.load() != nullptr)
         {
             Node<T>* currentNode = m_start;
             m_start = currentNode->next.load();
